@@ -392,8 +392,8 @@ module.exports = [
   {
     name: 'MC Function',
     id: 'mcfunction',
-    scopeName: 'source.mcfunction-snapshot',
-    grammar: loadJSON('mcfunction-snapshot.tmLanguage.json')
+    scopeName: 'source.mcfunction',
+    grammar: loadJSON('mcfunction.tmLanguage.json')
   },
   {
     name: 'Multidimensional Expression',
