@@ -1,8 +1,10 @@
+.vpc-shiki {
+  border-radius: 4px;
+}
 .vpc-shiki code {
   display: block;
   overflow-x: auto;
   padding: .5em;
-  border-radius: 4px;
   position: relative;
 
   font-size: 0.875rem;
@@ -31,8 +33,20 @@
   opacity: 1;
 }
 
+.vpc-shiki-spinner-container {
+  align-items: center;
+  background-color: rgba(0, 0, 0, .6);
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
 .vpc-shiki-preview {
-  margin-bottom: 1em;
+  margin-bottom: 2em;
 }
 
 .vpc-shiki-lang {

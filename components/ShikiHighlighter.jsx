@@ -84,6 +84,7 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
             color: accentFgColor,
             cursor: this.state.copyCooldown ? 'default' : null
           }}>{this.state.copyCooldown ? Messages.ACCOUNT_USERNAME_COPY_SUCCESS_1 : Messages.COPY}</button>
+          {this.props.children}
         </code>
       </pre>
     )

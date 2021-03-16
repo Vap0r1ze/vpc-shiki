@@ -1,7 +1,10 @@
-const { React, i18n: { Messages } } = require('powercord/webpack')
+const { React, getModuleByDisplayName } = require('powercord/webpack')
 const { SelectInput, TextInput } = require('powercord/components/settings')
 const ShikiHighlighter = require('./ShikiHighlighter')
 const previewsData = require('../previews')
+
+const wait = ms => new Promise(res => setTimeout(res, ms))
+const Spinner = getModuleByDisplayName('Spinner', false)
 
 const ERROR_COLOR = '#f04747'
 const CUSTOM_THEME_ISSUES = [
@@ -9,6 +12,7 @@ const CUSTOM_THEME_ISSUES = [
   'The theme must be a json file with the vscode color theme schema.',
   'The theme must be accessed with HTTPS.',
 ]
+const LOAD_PADDING = 250
 
 module.exports = class Settings extends React.PureComponent {
   state = {
@@ -32,6 +36,9 @@ module.exports = class Settings extends React.PureComponent {
     }
     return 0
   }
+  padPromise (promise) { // https://i.imgur.com/G7Qmfxj.png
+    return Promise.all([promise, wait(LOAD_PADDING)])
+  }
 
   render () {
     const {
@@ -51,7 +58,13 @@ module.exports = class Settings extends React.PureComponent {
         getHighlighter={getHighlighter}
         getLangName={getLangName}
         isPreview={true}
-      />
+      >
+        {this.state.isThemeLoading ? (
+          <div class="vpc-shiki-spinner-container">
+            <Spinner type="spinningCircle"/>
+          </div>
+        ) : null}
+      </ShikiHighlighter>
     ))
 
     let customThemeLabel = 'Custom Theme'
@@ -76,8 +89,9 @@ module.exports = class Settings extends React.PureComponent {
         <SelectInput
           onChange={({ value }) => {
             updateSetting('theme', value)
-            loadHighlighter().then(() => {
-              this.forceUpdate()
+            this.setState({ isThemeLoading: true })
+            this.padPromise(loadHighlighter()).then(() => {
+              this.setState({ isThemeLoading: false })
             })
           }}
           options={shiki.BUNDLED_THEMES.map(theme => ({
@@ -97,7 +111,7 @@ module.exports = class Settings extends React.PureComponent {
             const issue = this.getCustomThemeIssue(value)
             if (!issue) {
               updateSetting('custom-theme', value)
-              loadHighlighter().then(() => {
+              this.padPromise(loadHighlighter()).then(() => {
                 this.setState({ isThemeLoading: false })
               })
               this.setState({
