@@ -1,0 +1,489 @@
+{
+	"scopeName": "source.moonscript",
+	"name": "MoonScript",
+	"fileTypes": [
+		"moon"
+	],
+	"firstLineMatch": "^#!.*\\bmoon",
+	"foldingStartMarker": "^\\s*class\\s+\\S.*$|.*(->|=>)\\s*$|.*[\\[{]\\s*$",
+	"foldingStopMarker": "^\\s*$|^\\s*[}\\]]\\s*$",
+	"patterns": [
+		{
+			"captures": {
+				"1": {
+					"name": "variable.parameter.function.moon"
+				},
+				"2": {
+					"name": "storage.type.function.moon"
+				}
+			},
+			"comment": "match stuff like: a -> … ",
+			"match": "(\\([^()]*?\\))?\\s*([=-]>)",
+			"name": "meta.inline.function.moon"
+		},
+		{
+			"captures": {
+				"1": {
+					"name": "entity.name.type.class"
+				}
+			},
+			"match": "(\\b[A-Z]\\w*)\\s*",
+			"name": "entity.name.type.class.moon"
+		},
+		{
+			"begin": "'''",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin.moon"
+				}
+			},
+			"end": "'''",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.end.moon"
+				}
+			},
+			"name": "string.quoted.heredoc.moon"
+		},
+		{
+			"begin": "\"\"\"",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin.moon"
+				}
+			},
+			"end": "\"\"\"",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.end.moon"
+				}
+			},
+			"name": "string.quoted.double.heredoc.moon",
+			"patterns": [
+				{
+					"match": "\\\\.",
+					"name": "constant.character.escape.moon"
+				},
+				{
+					"include": "#interpolated_moon"
+				}
+			]
+		},
+		{
+			"begin": "\\[\\[",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin.moon"
+				}
+			},
+			"end": "\\]\\]",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.end.moon"
+				}
+			},
+			"name": "string.quoted.other.multiline.moon"
+		},
+		{
+			"begin": "(?<!-)--",
+			"captures": {
+				"0": {
+					"name": "punctuation.definition.comment.moon"
+				}
+			},
+			"end": "(?:[ \\t]*\\n)",
+			"name": "comment.block.moon",
+			"patterns": [
+				{
+					"match": "@\\w*",
+					"name": "storage.type.annotation.moonscript"
+				}
+			]
+		},
+		{
+			"match": "(?x)\\b(?<![\\.\\$])(\\b(if|then|else|elseif|export|import|from|switch|and|or|not|when|with|using|do|for|in|while|return|unless|continue|break|local)\\b)(?!\\s*:)\\b",
+			"name": "keyword.control.moon"
+		},
+		{
+			"match": "(?x)~=|%|\\^|\\*|\\/|(\\-)?\\-(?!>)\\+|==|=(?!>)|!=|<=|>=|\\.\\.=|<|>|\\.\\.(\\.)?|\\||\\|\\|\\*=|(?<!\\()/=|%=|\\+=|\\-=|\\b(?<![\\.\\$])(and|or|not)(?!\\s*:)\\b",
+			"name": "keyword.operator.moon"
+		},
+		{
+			"match": "\\b(?<![\\.\\$])(function|end|repeat)(?!\\s*:)\\b",
+			"name": "invalid.illegal.moon"
+		},
+		{
+			"captures": {
+				"1": {
+					"name": "variable.assignment.moon"
+				},
+				"5": {
+					"name": "keyword.operator.moon"
+				}
+			},
+			"match": "([a-zA-Z\\$_](\\w|\\$|\\.)*\\s*(?=((:)|(=(?!=))|(\\+=)|(\\-=)|(\\.\\.=)|(\\*=)|(%=)))(?!(\\s*\\(.*\\))?\\s*([=-]>)))",
+			"name": "variable.assignment.moon"
+		},
+		{
+			"begin": "(?<=\\s|^)(\\{)(?=.+?\\}\\s+[:=])",
+			"beginCaptures": {
+				"0": {
+					"name": "keyword.operator.moon"
+				}
+			},
+			"end": "(\\}\\s*[:=])",
+			"endCaptures": {
+				"0": {
+					"name": "keyword.operator.moon"
+				}
+			},
+			"name": "meta.variable.assignment.destructured.object.moon",
+			"patterns": [
+				{
+					"include": "#variable_name"
+				},
+				{
+					"include": "#instance_variable"
+				},
+				{
+					"include": "#single_quoted_string"
+				},
+				{
+					"include": "#double_quoted_string"
+				},
+				{
+					"include": "#numeric"
+				}
+			]
+		},
+		{
+			"captures": {
+				"1": {
+					"name": "entity.name.function.moon"
+				},
+				"2": {
+					"name": "entity.name.function.moon"
+				},
+				"3": {
+					"name": "variable.parameter.function.moon"
+				},
+				"4": {
+					"name": "storage.type.function.moon"
+				}
+			},
+			"match": "(?x)\n\t\t\t\t(?<=^|\\s)\n\t\t\t\t(?=@?[a-zA-Z\\$_])\n\t\t\t\t(\n\t\t\t\t\t@?[a-zA-Z\\$_](\\w|\\$|:|\\.)*\\s*\n\t\t\t\t\t(?=[:=](\\s*\\(.*\\))?\\s*([=-]>))\n\t\t\t\t)\n\t\t\t",
+			"name": "meta.function.moon"
+		},
+		{
+			"match": "[=-]>",
+			"name": "storage.type.function.moon"
+		},
+		{
+			"match": "\\b(?<!\\.)(true|false|nil)(?!\\s*[:=])\\b",
+			"name": "constant.language.boolean.moon"
+		},
+		{
+			"captures": {
+				"1": {
+					"name": "storage.type.class.moon"
+				},
+				"2": {
+					"name": "entity.name.type.class.moon"
+				},
+				"3": {
+					"name": "keyword.control.inheritance.moon"
+				},
+				"4": {
+					"name": "entity.other.inherited-class.moon"
+				}
+			},
+			"match": "(class\\b)\\s+(@?[a-zA-Z\\$_][\\w\\.]*)?(?:\\s+(extends)\\s+(@?[a-zA-Z\\$\\._][\\w\\.]*))?",
+			"name": "meta.class.moon"
+		},
+		{
+			"match": "(?x)\\b(assert|collectgarbage|dofile|error|getfenv|getmetatable|ipairs|loadfile|loadstring|module|next|pairs|pcall|print|rawequal|rawget|rawset|require|select|setfenv|setmetatable|tonumber|tostring|type|unpack|xpcall)\\b",
+			"name": "support.function.moon"
+		},
+		{
+			"match": "@?[A-Za-z_]\\w+(?=\\(|!|[ ]+(\"|'|\\{|-?(?!if|then|else|elseif|export|import|from|and|or|not|with|for|in|while|return|unless|continue|break|local)\\w+))",
+			"name": "support.function.moon"
+		},
+		{
+			"match": "\\b(coroutine\\.(create|resume|running|status|wrap|yield)|string\\.(byte|char|dump|find|format|gmatch|gsub|len|lower|match|rep|reverse|sub|upper)|table\\.(concat|insert|maxn|remove|sort)|math\\.(abs|acos|asin|atan2?|ceil|cosh?|deg|exp|floor|fmod|frexp|ldexp|log|log10|max|min|modf|pow|rad|random|randomseed|sinh?|sqrt|tanh?)|io\\.(close|flush|input|lines|open|output|popen|read|tmpfile|type|write)|os\\.(clock|date|difftime|execute|exit|getenv|remove|rename|setlocale|time|tmpname)|package\\.(cpath|loaded|loadlib|path|preload|seeall)|debug\\.(debug|[gs]etfenv|[gs]ethook|getinfo|[gs]etlocal|[gs]etmetatable|getregistry|[gs]etupvalue|traceback))\\b",
+			"name": "support.function.moon"
+		},
+		{
+			"match": ",[ |\\t]*",
+			"name": "meta.delimiter.object.comma.moon"
+		},
+		{
+			"match": "\\.",
+			"name": "meta.delimiter.method.period.moon"
+		},
+		{
+			"match": "\\{|\\}",
+			"name": "meta.brace.curly.moon"
+		},
+		{
+			"match": "\\(|\\)",
+			"name": "meta.brace.round.moon"
+		},
+		{
+			"match": "\\[|\\]\\s*",
+			"name": "meta.brace.square.moon"
+		},
+		{
+			"include": "#instance_variable"
+		},
+		{
+			"include": "#single_quoted_string"
+		},
+		{
+			"include": "#double_quoted_string"
+		},
+		{
+			"include": "#numeric"
+		}
+	],
+	"repository": {
+		"double_quoted_string": {
+			"patterns": [
+				{
+					"begin": "\"",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.begin.moon"
+						}
+					},
+					"end": "\"",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.end.moon"
+						}
+					},
+					"name": "string.quoted.double.moon",
+					"patterns": [
+						{
+							"match": "\\\\(x\\h{2}|[0-2][0-7]{,2}|3[0-6][0-7]|37[0-7]?|[4-7][0-7]?|.)",
+							"name": "constant.character.escape.moon"
+						},
+						{
+							"include": "#interpolated_moon"
+						}
+					]
+				}
+			]
+		},
+		"instance_variable": {
+			"patterns": [
+				{
+					"match": "(@)([a-zA-Z_\\$]\\w*)?",
+					"name": "variable.other.readwrite.instance.moon"
+				}
+			]
+		},
+		"interpolated_moon": {
+			"patterns": [
+				{
+					"begin": "\\#\\{",
+					"captures": {
+						"0": {
+							"name": "punctuation.section.embedded.moon"
+						}
+					},
+					"end": "\\}",
+					"name": "source.moon.embedded.source",
+					"patterns": [
+						{
+							"include": "$self"
+						}
+					]
+				}
+			]
+		},
+		"numeric": {
+			"patterns": [
+				{
+					"match": "(?<!\\$)\\b((0([box])[0-9a-fA-F]+)|([0-9]+(\\.[0-9]+)?(e[+\\-]?[0-9]+)?))\\b",
+					"name": "constant.numeric.moon"
+				}
+			]
+		},
+		"single_quoted_string": {
+			"patterns": [
+				{
+					"begin": "'",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.begin.moon"
+						}
+					},
+					"end": "'",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.end.moon"
+						}
+					},
+					"name": "string.quoted.single.moon",
+					"patterns": [
+						{
+							"match": "\\\\(x\\h{2}|[0-2][0-7]{,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.)",
+							"name": "constant.character.escape.moon"
+						}
+					]
+				}
+			]
+		},
+		"variable_name": {
+			"patterns": [
+				{
+					"captures": {
+						"1": {
+							"name": "variable.assignment.moon"
+						}
+					},
+					"match": "([a-zA-Z\\$_]\\w*(\\.\\w+)*)",
+					"name": "variable.assignment.moon"
+				}
+			]
+		},
+		"regex-character-class": {
+			"patterns": [
+				{
+					"match": "\\\\[wWsSdD]|\\.",
+					"name": "constant.character.character-class.regexp"
+				},
+				{
+					"match": "\\\\([0-7]{3}|x\\h\\h|u\\h\\h\\h\\h)",
+					"name": "constant.character.numeric.regexp"
+				},
+				{
+					"match": "\\\\c[A-Z]",
+					"name": "constant.character.control.regexp"
+				},
+				{
+					"match": "\\\\.",
+					"name": "constant.character.escape.backslash.regexp"
+				}
+			]
+		},
+		"heregexp": {
+			"patterns": [
+				{
+					"match": "\\\\[bB]|\\^|\\$",
+					"name": "keyword.control.anchor.regexp"
+				},
+				{
+					"match": "\\\\[1-9]\\d*",
+					"name": "keyword.other.back-reference.regexp"
+				},
+				{
+					"match": "[?+*]|\\{(\\d+,\\d+|\\d+,|,\\d+|\\d+)\\}\\??",
+					"name": "keyword.operator.quantifier.regexp"
+				},
+				{
+					"begin": "(\\()((\\?=)|(\\?!))",
+					"beginCaptures": {
+						"1": {
+							"name": "punctuation.definition.group.regexp"
+						},
+						"3": {
+							"name": "meta.assertion.look-ahead.regexp"
+						},
+						"4": {
+							"name": "meta.assertion.negative-look-ahead.regexp"
+						}
+					},
+					"end": "(\\))",
+					"endCaptures": {
+						"1": {
+							"name": "punctuation.definition.group.regexp"
+						}
+					},
+					"name": "meta.group.assertion.regexp",
+					"patterns": [
+						{
+							"include": "#heregexp"
+						}
+					]
+				},
+				{
+					"begin": "\\((\\?:)?",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.group.regexp"
+						}
+					},
+					"end": "\\)",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.group.regexp"
+						}
+					},
+					"name": "meta.group.regexp",
+					"patterns": [
+						{
+							"include": "#heregexp"
+						}
+					]
+				},
+				{
+					"begin": "(\\[)(\\^)?",
+					"beginCaptures": {
+						"1": {
+							"name": "punctuation.definition.character-class.regexp"
+						},
+						"2": {
+							"name": "keyword.operator.negation.regexp"
+						}
+					},
+					"end": "(\\])",
+					"endCaptures": {
+						"1": {
+							"name": "punctuation.definition.character-class.regexp"
+						}
+					},
+					"name": "constant.other.character-class.set.regexp",
+					"patterns": [
+						{
+							"captures": {
+								"1": {
+									"name": "constant.character.numeric.regexp"
+								},
+								"2": {
+									"name": "constant.character.control.regexp"
+								},
+								"3": {
+									"name": "constant.character.escape.backslash.regexp"
+								},
+								"4": {
+									"name": "constant.character.numeric.regexp"
+								},
+								"5": {
+									"name": "constant.character.control.regexp"
+								},
+								"6": {
+									"name": "constant.character.escape.backslash.regexp"
+								}
+							},
+							"match": "(?:.|(\\\\(?:[0-7]{3}|x\\h\\h|u\\h\\h\\h\\h))|(\\\\c[A-Z])|(\\\\.))\\-(?:[^\\]\\\\]|(\\\\(?:[0-7]{3}|x\\h\\h|u\\h\\h\\h\\h))|(\\\\c[A-Z])|(\\\\.))",
+							"name": "constant.other.character-class.range.regexp"
+						},
+						{
+							"include": "#regex-character-class"
+						}
+					]
+				},
+				{
+					"include": "#regex-character-class"
+				},
+				{
+					"include": "#interpolated_moon"
+				},
+				{
+					"include": "#embedded_comment"
+				}
+			]
+		}
+	}
+}

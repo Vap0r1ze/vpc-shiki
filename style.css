@@ -1,0 +1,50 @@
+.vpc-shiki code {
+  display: block;
+  overflow-x: auto;
+  padding: .5em;
+  border-radius: 4px;
+  position: relative;
+
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  text-indent: 0;
+  white-space: pre-wrap;
+  background: transparent;
+  border: none;
+}
+
+.vpc-shiki-plain code {
+  padding-top: 8px;
+}
+
+.vpc-shiki-preview {
+  margin-bottom: 1em;
+}
+
+.vpc-shiki-lang {
+  padding: 0 5px;
+  margin-bottom: 6px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.vpc-shiki-table {
+  border-collapse: collapse;
+}
+
+.vpc-shiki-table tr {
+  height: 19px;
+  width: 100%;
+}
+
+.vpc-shiki td:first-child {
+  border-right: 1px solid transparent;
+  padding-left: 5px;
+  padding-right: 8px;
+  user-select: none;
+}
+
+.vpc-shiki td:last-child {
+  padding-left: 8px;
+  word-break: break-all;
+}
