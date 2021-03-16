@@ -3,7 +3,7 @@ const { React, getModule } = require('powercord/webpack')
 const { inject, uninject } = require('powercord/injector')
 const { getReactInstance } = require('powercord/util')
 const { resolve } = require('path')
-const SettingsFactory = require('./components/SettingsFactory.jsx')
+const Settings = require('./components/Settings.jsx')
 const ShikiHighlighter = require('./components/ShikiHighlighter.jsx')
 const languages = require('./languages')
 const { shiki } = require('./shiki.min.js')
@@ -19,12 +19,14 @@ module.exports = class ShikiCodeblocks extends Plugin {
     powercord.api.settings.registerSettings('vpc-shiki', {
       category: this.entityID,
       label: 'Shiki Codeblocks',
-      render: SettingsFactory({
+      render: () => React.createElement(Settings, {
+        getSetting: this.settings.get,
+        updateSetting: this.settings.set,
         shiki,
         loadHighlighter: this.loadHighlighter.bind(this),
         getHighlighter: this.getHighlighter.bind(this),
         getLangName: this.getLangName,
-      }),
+      })
     })
 
     this.loadHighlighter()

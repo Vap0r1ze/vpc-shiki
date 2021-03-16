@@ -17,6 +17,20 @@
   padding-top: 8px;
 }
 
+.vpc-shiki-copy-btn {
+  border-top-left-radius: 4px;
+  padding: 4px 8px;
+  position: absolute;
+  font-size: 1em;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+}
+
+.vpc-shiki:hover .vpc-shiki-copy-btn {
+  opacity: 1;
+}
+
 .vpc-shiki-preview {
   margin-bottom: 1em;
 }

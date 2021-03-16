@@ -2,27 +2,30 @@ const { React, i18n: { Messages } } = require('powercord/webpack')
 const { clipboard } = require('electron')
 
 module.exports = class ShikiHighlighter extends React.PureComponent {
+  state = {
+    copyCooldown: false
+  }
+
   text2DOM (text) {
     const template = document.createElement('template')
     template.innerHTML = text
     return template.content.firstChild
   }
 
-  onCopyBtnClick (e) {
-    // const { target } = e
-    // if (target.classList.contains('copied')) {
-    //   return
-    // }
+  onCopyBtnClick () {
+    if (this.state.copyCooldown) return
 
-    // target.innerText = Messages.ACCOUNT_USERNAME_COPY_SUCCESS_1
-    // target.classList.add('copied')
+    this.setState({
+      copyCooldown: true
+    })
 
-    // setTimeout(() => {
-    //   target.innerText = Messages.COPY
-    //   target.classList.remove('copied')
-    // }, 1e3)
+    setTimeout(() => {
+      this.setState({
+        copyCooldown: false
+      })
+    }, 1000)
 
-    clipboard.writeText(content)
+    clipboard.writeText(this.props.content)
   }
 
   render () {
@@ -45,7 +48,10 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
 
     const pre = this.text2DOM(html)
     const langName = getLangName(lang)
-    const [, plainColor] = highlighter.codeToHtml('').match(/[" ;]color: ?(#[a-fA-F0-9]+)/)
+    const theme = highlighter.getTheme()._theme
+    const plainColor = theme.fg
+    const accentBgColor = theme.colors['statusBarItem.background'] || '#007BC8'
+    const accentFgColor = theme.colors['statusBarItem.foreground'] || '#FFF'
 
     const lineSpans = [...pre.firstChild.children]
     let lines
@@ -66,8 +72,6 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
     if (!langName) preClassName += ' vpc-shiki-plain'
     if (isPreview) preClassName += ' vpc-shiki-preview'
 
-    console.log(Messages)
-
     return (
       <pre className={preClassName} style={{ backgroundColor: pre.style.backgroundColor }}>
         <code>
@@ -75,7 +79,11 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
           <table className="vpc-shiki-table">
             {...codeTableRows}
           </table>
-          <button className="vpc-shiki-copy-btn" onClick={onCopyBtnClick}>{Messages.COPY}</button>
+          <button className="vpc-shiki-copy-btn" onClick={this.onCopyBtnClick.bind(this)} style={{
+            backgroundColor: accentBgColor,
+            color: accentFgColor,
+            cursor: this.state.copyCooldown ? 'default' : null
+          }}>{this.state.copyCooldown ? Messages.ACCOUNT_USERNAME_COPY_SUCCESS_1 : Messages.COPY}</button>
         </code>
       </pre>
     )
