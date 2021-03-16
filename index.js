@@ -82,7 +82,7 @@ module.exports = class ShikiCodeblocks extends Plugin {
 
   injectCodeblock (args, res) {
     if (!args) return
-    res.props.render = (props) => {
+    res.props.render = () => {
       const { lang, content } = args[0]
 
       return React.createElement(ShikiHighlighter, {
