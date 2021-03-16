@@ -613,6 +613,12 @@ module.exports = [
     grammar: loadJSON('smalltalk.tmLanguage.json')
   },
   {
+    name: 'SourcePawn',
+    id: 'sp',
+    scopeName: 'source.sourcepawn',
+    grammar: loadJSON('sourcepawn.tmLanguage.json')
+  },
+  {
     name: 'SQL',
     id: 'sql',
     scopeName: 'source.sql',
