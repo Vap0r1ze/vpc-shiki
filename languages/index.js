@@ -390,6 +390,12 @@ module.exports = [
     grammar: loadJSON('matlab.tmLanguage.json')
   },
   {
+    name: 'MC Function',
+    id: 'mcfunction',
+    scopeName: 'source.mcfunction-snapshot',
+    grammar: loadJSON('mcfunction-snapshot.tmLanguage.json')
+  },
+  {
     name: 'Multidimensional Expression',
     id: 'mdx',
     scopeName: 'text.html.markdown.jsx',
