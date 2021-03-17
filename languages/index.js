@@ -675,6 +675,12 @@ module.exports = [
     aliases: ['ts']
   },
   {
+    name: 'VHDL',
+    id: 'vhdl',
+    scopeName: 'source.vhdl',
+    grammar: loadJSON('vhdl.tmLanguage.json')
+  },
+  {
     name: 'Visual Basic .NET',
     id: 'vb',
     scopeName: 'source.asp.vb.net',
