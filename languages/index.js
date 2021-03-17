@@ -111,7 +111,7 @@ module.exports = [
     id: 'csharp',
     scopeName: 'source.cs',
     grammar: loadJSON('csharp.tmLanguage.json'),
-    aliases: ['c#']
+    aliases: ['c#', 'cs']
   },
   {
     name: 'CSS',
