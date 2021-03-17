@@ -32,13 +32,13 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
     } = this.props
 
     const highlighter = getHighlighter()
-
     const langName = getLangName(lang)
-    const theme = highlighter.getTheme()._theme
-    const plainColor = theme.fg
-    const accentBgColor = theme.colors['statusBar.background'] || '#007BC8'
-    const accentFgColor = theme.colors['statusBar.foreground'] || '#FFF'
-    const backgroundColor = theme.colors['editor.background'] || 'var(--background-secondary)'
+
+    const theme = highlighter?.getTheme?.()?._theme
+    const plainColor = theme?.fg || 'var(--text-normal)'
+    const accentBgColor = theme?.colors?.['statusBar.background'] || '#007BC8'
+    const accentFgColor = theme?.colors?.['statusBar.foreground'] || '#FFF'
+    const backgroundColor = theme?.colors?.['editor.background'] || 'var(--background-secondary)'
 
     let tokens
     try {

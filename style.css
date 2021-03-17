@@ -29,7 +29,7 @@
   opacity: 0;
 }
 
-.vpc-shiki:hover .vpc-shiki-copy-btn {
+.vpc-shiki:not(.vpc-shiki-preview):hover .vpc-shiki-copy-btn {
   opacity: 1;
 }
 

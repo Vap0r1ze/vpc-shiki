@@ -18,7 +18,7 @@ module.exports = class Settings extends React.PureComponent {
     isThemeLoading: false,
     isCustomThemeValid: true,
     customThemeIssue: null,
-    customThemeHref: (console.log(this.props),this.props.getSetting('custom-theme', '')),
+    customThemeHref: this.props.getSetting('custom-theme', ''),
   }
 
   humanizeTheme (theme) {
@@ -49,6 +49,13 @@ module.exports = class Settings extends React.PureComponent {
       getLangName,
       refreshCodeblocks
     } = this.props
+
+    if (!this.state.isThemeLoading && !getHighlighter()) {
+      this.setState({ isThemeLoading: true })
+      loadHighlighter().then(() => {
+        this.setState({ isThemeLoading: false })
+      })
+    }
 
     const previews = previewsData.map(data => (
       <ShikiHighlighter
