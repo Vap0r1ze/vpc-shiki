@@ -39,32 +39,28 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
 
     const highlighter = getHighlighter()
 
-    let html
+    let tokens
     try {
-      html = highlighter.codeToHtml(content, lang)
+      tokens = highlighter.codeToThemedTokens(content, lang)
     } catch (error) {
-      html = highlighter.codeToHtml(content)
+      tokens = highlighter.codeToThemedTokens(content)
     }
 
-    const pre = this.text2DOM(html)
     const langName = getLangName(lang)
     const theme = highlighter.getTheme()._theme
     const plainColor = theme.fg
     const accentBgColor = theme.colors['statusBar.background'] || '#007BC8'
     const accentFgColor = theme.colors['statusBar.foreground'] || '#FFF'
+    const backgroundColor = theme.colors['editor.background'] || 'var(--background-secondary)'
 
-    const lineSpans = [...pre.firstChild.children]
-    let lines
-    if (langName || lineSpans.length !== 1) {
-      lines = lineSpans.map(line => line.innerHTML)
-    } else {
-      lines = lineSpans[0].firstChild.innerHTML.split('\n').map(line => `<span style="color: ${plainColor}">${line}</span>`)
-    }
-
-    const codeTableRows = lines.map((line, i) => (
+    const codeTableRows = tokens.map((line, i) => (
       <tr>
         <td style={{ color: plainColor }}>{i + 1}</td>
-        <td dangerouslySetInnerHTML={{ __html: line }}></td>
+        <td>
+          {line.map(({ content, color }) => (
+            <span style={{ color }}>{content}</span>
+          ))}
+        </td>
       </tr>
     ))
 
@@ -73,7 +69,7 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
     if (isPreview) preClassName += ' vpc-shiki-preview'
 
     return (
-      <pre className={preClassName} style={{ backgroundColor: pre.style.backgroundColor }}>
+      <pre className={preClassName} style={{ backgroundColor }}>
         <code>
           {langName && <div className="vpc-shiki-lang" style={{ color: plainColor }}>{langName}</div>}
           <table className="vpc-shiki-table">
