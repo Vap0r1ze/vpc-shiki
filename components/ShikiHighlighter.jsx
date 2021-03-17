@@ -6,12 +6,6 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
     copyCooldown: false
   }
 
-  text2DOM (text) {
-    const template = document.createElement('template')
-    template.innerHTML = text
-    return template.content.firstChild
-  }
-
   onCopyBtnClick () {
     if (this.state.copyCooldown) return
 
