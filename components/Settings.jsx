@@ -1,10 +1,9 @@
-const { React, getModuleByDisplayName } = require('powercord/webpack')
+const { React } = require('powercord/webpack')
 const { SelectInput, TextInput } = require('powercord/components/settings')
+const { Spinner } = require('powercord/components')
+const { sleep } = require('powercord/util')
 const ShikiHighlighter = require('./ShikiHighlighter')
 const previewsData = require('../previews')
-
-const wait = ms => new Promise(res => setTimeout(res, ms))
-const Spinner = getModuleByDisplayName('Spinner', false)
 
 const ERROR_COLOR = '#f04747'
 const CUSTOM_THEME_ISSUES = [
@@ -37,7 +36,7 @@ module.exports = class Settings extends React.PureComponent {
     return 0
   }
   padPromise (promise) { // https://i.imgur.com/G7Qmfxj.png
-    return Promise.all([promise, wait(LOAD_PADDING)])
+    return Promise.all([promise, sleep(LOAD_PADDING)])
   }
 
   render () {
@@ -48,6 +47,7 @@ module.exports = class Settings extends React.PureComponent {
       loadHighlighter,
       getHighlighter,
       getLangName,
+      refreshCodeblocks
     } = this.props
 
     const previews = previewsData.map(data => (
@@ -92,6 +92,7 @@ module.exports = class Settings extends React.PureComponent {
             this.setState({ isThemeLoading: true })
             this.padPromise(loadHighlighter()).then(() => {
               this.setState({ isThemeLoading: false })
+              refreshCodeblocks()
             })
           }}
           options={shiki.BUNDLED_THEMES.map(theme => ({
@@ -113,6 +114,7 @@ module.exports = class Settings extends React.PureComponent {
               updateSetting('custom-theme', value)
               this.padPromise(loadHighlighter()).then(() => {
                 this.setState({ isThemeLoading: false })
+                refreshCodeblocks()
               })
               this.setState({
                 isThemeLoading: true,
