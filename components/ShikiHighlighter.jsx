@@ -1,4 +1,4 @@
-const { React, i18n: { Messages } } = require('powercord/webpack')
+const { React, hljs, i18n: { Messages } } = require('powercord/webpack')
 const { clipboard } = require('electron')
 
 module.exports = class ShikiHighlighter extends React.PureComponent {
@@ -29,32 +29,66 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
       getHighlighter,
       getLangName,
       isPreview,
+      tryHLJS,
     } = this.props
 
-    const highlighter = getHighlighter()
-    const langName = getLangName(lang)
+    const hljsLang = hljs.getLanguage(lang)
+    let langName = getLangName(lang)
 
-    const theme = highlighter?.getTheme?.()?._theme
+    let useHLJS
+    switch (tryHLJS) {
+      case 'always':
+        useHLJS = true
+        break
+      case 'primary':
+        useHLJS = !!hljsLang || lang === ''
+        break
+      case 'secondary':
+        useHLJS = !langName && !!hljsLang
+        break
+      case 'never':
+        useHLJS = false
+        break
+    }
+
+    const highlighter = getHighlighter()
+
+    const theme = useHLJS ? null : highlighter?.getTheme?.()?._theme
     const plainColor = theme?.fg || 'var(--text-normal)'
-    const accentBgColor = theme?.colors?.['statusBar.background'] || '#007BC8'
+    const accentBgColor = theme?.colors?.['statusBar.background'] || (useHLJS ? '#007BC8' : '#7289da')
     const accentFgColor = theme?.colors?.['statusBar.foreground'] || '#FFF'
     const backgroundColor = theme?.colors?.['editor.background'] || 'var(--background-secondary)'
 
-    let tokens
-    try {
-      tokens = highlighter.codeToThemedTokens(content, lang || 'NOT_A_REAL_LANG')
-    } catch (error) {
-      tokens = content.split('\n').map(line => ([{ color: plainColor, content: line }]))
+    console.log(tryHLJS, useHLJS)
+
+    let lines
+
+    if (useHLJS) {
+      langName = hljsLang?.name
+      try {
+        const { value: hljsHtml } = hljs.highlight(lang, content, true)
+        lines = hljsHtml.split('\n').map(line => <span dangerouslySetInnerHTML={{ __html: line }}/>)
+      } catch (error) {
+        lines = content.split('\n').map(line => <span>{line}</span>)
+      }
+    } else {
+      let tokens
+
+      try {
+        tokens = highlighter.codeToThemedTokens(content, lang || 'NOT_A_REAL_LANG')
+      } catch (error) {
+        tokens = content.split('\n').map(line => ([{ color: plainColor, content: line }]))
+      }
+
+      lines = tokens.map(line => line.map(({ content, color }) => (
+        <span style={{ color }}>{content}</span>
+      )))
     }
 
-    const codeTableRows = tokens.map((line, i) => (
+    const codeTableRows = lines.map((line, i) => (
       <tr>
         <td style={{ color: plainColor }}>{i + 1}</td>
-        <td>
-          {line.map(({ content, color }) => (
-            <span style={{ color }}>{content}</span>
-          ))}
-        </td>
+        <td>{line}</td>
       </tr>
     ))
 
@@ -63,9 +97,9 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
     if (isPreview) preClassName += ' vpc-shiki-preview'
 
     return (
-      <pre className={preClassName} style={{ backgroundColor }}>
+      <pre className={preClassName} style={{ backgroundColor, color: plainColor }}>
         <code>
-          {langName && <div className="vpc-shiki-lang" style={{ color: plainColor }}>{langName}</div>}
+          {langName && <div className="vpc-shiki-lang">{langName}</div>}
           <table className="vpc-shiki-table">
             {...codeTableRows}
           </table>

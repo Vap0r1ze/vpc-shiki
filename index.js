@@ -19,9 +19,10 @@ module.exports = class ShikiCodeblocks extends Plugin {
     powercord.api.settings.registerSettings('vpc-shiki', {
       category: this.entityID,
       label: 'Shiki Codeblocks',
-      render: ({ getSetting, updateSetting }) => React.createElement(Settings, {
+      render: ({ getSetting, updateSetting, toggleSetting }) => React.createElement(Settings, {
         getSetting,
         updateSetting,
+        toggleSetting,
         shiki,
         loadHighlighter: this.loadHighlighter.bind(this),
         getHighlighter: this.getHighlighter.bind(this),
@@ -91,6 +92,7 @@ module.exports = class ShikiCodeblocks extends Plugin {
         content,
         getHighlighter: this.getHighlighter.bind(this),
         getLangName: this.getLangName,
+        tryHLJS: this.settings.get('try-hljs', 'never'),
       })
     }
   }

@@ -1,5 +1,5 @@
 const { React } = require('powercord/webpack')
-const { SelectInput, TextInput } = require('powercord/components/settings')
+const { SelectInput, TextInput, SwitchItem, RadioGroup } = require('powercord/components/settings')
 const { Spinner } = require('powercord/components')
 const { sleep } = require('powercord/util')
 const ShikiHighlighter = require('./ShikiHighlighter')
@@ -18,7 +18,7 @@ module.exports = class Settings extends React.PureComponent {
     isThemeLoading: false,
     isCustomThemeValid: true,
     customThemeIssue: null,
-    customThemeHref: this.props.getSetting('custom-theme', ''),
+    lastEdited: Date.now(),
   }
 
   humanizeTheme (theme) {
@@ -43,6 +43,7 @@ module.exports = class Settings extends React.PureComponent {
     const {
       getSetting,
       updateSetting,
+      toggleSetting,
       shiki,
       loadHighlighter,
       getHighlighter,
@@ -65,6 +66,7 @@ module.exports = class Settings extends React.PureComponent {
         getHighlighter={getHighlighter}
         getLangName={getLangName}
         isPreview={true}
+        tryHLJS={getSetting('try-hljs')}
       >
         {this.state.isThemeLoading ? (
           <div class="vpc-shiki-spinner-container">
@@ -125,24 +127,56 @@ module.exports = class Settings extends React.PureComponent {
               })
               this.setState({
                 isThemeLoading: true,
-                customThemeHref: value,
+                lastEdited: Date.now(),
                 isCustomThemeValid: true,
                 customThemeIssue: null,
               })
             } else {
               this.setState({
                 isThemeLoading: false,
-                customThemeHref: value,
+                lastEdited: Date.now(),
                 isCustomThemeValid: false,
                 customThemeIssue: CUSTOM_THEME_ISSUES[issue - 1],
               })
             }
           }}
           placeholder="https://raw.githubusercontent.com/millsp/material-candy/master/material-candy.json"
-          value={this.state.customThemeHref}
+          value={getSetting('custom-theme')}
         >
           {customThemeLabel}
         </TextInput>
+        <RadioGroup
+          value={getSetting('try-hljs', 'never')}
+          onChange={({ value }) => {
+            updateSetting('try-hljs', value)
+            this.setState({ lastEdited: Date.now() })
+          }}
+          options={[
+            {
+              name: 'Never',
+              desc: 'Always use the shiki highlighter.',
+              value: 'never'
+            },
+            {
+              name: 'As Primary',
+              desc: 'Use the default highlighter with supported langauges, with shiki as a fallback.',
+              value: 'primary'
+            },
+            {
+              name: 'As Secondary',
+              desc: 'Use the default highlighter only with langauges missing in this plugin but supported by default.',
+              value: 'secondary'
+            },
+            {
+              name: 'Always',
+              desc: 'Always use the default highlighter.',
+              value: 'always'
+            }
+          ]}
+          note={<>Uses the more lightweight, <b>unthemed</b> default highlighter.</>}
+        >
+          Use Default Highlighter
+        </RadioGroup>
       </div>
     )
   }
