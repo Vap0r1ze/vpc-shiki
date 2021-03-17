@@ -33,19 +33,19 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
 
     const highlighter = getHighlighter()
 
-    let tokens
-    try {
-      tokens = highlighter.codeToThemedTokens(content, lang)
-    } catch (error) {
-      tokens = highlighter.codeToThemedTokens(content)
-    }
-
     const langName = getLangName(lang)
     const theme = highlighter.getTheme()._theme
     const plainColor = theme.fg
     const accentBgColor = theme.colors['statusBar.background'] || '#007BC8'
     const accentFgColor = theme.colors['statusBar.foreground'] || '#FFF'
     const backgroundColor = theme.colors['editor.background'] || 'var(--background-secondary)'
+
+    let tokens
+    try {
+      tokens = highlighter.codeToThemedTokens(content, lang || 'NOT_A_REAL_LANG')
+    } catch (error) {
+      tokens = content.split('\n').map(line => ([{ color: plainColor, content: line }]))
+    }
 
     const codeTableRows = tokens.map((line, i) => (
       <tr>
