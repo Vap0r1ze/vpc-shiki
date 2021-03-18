@@ -32,7 +32,7 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
       tryHLJS,
     } = this.props
 
-    const hljsLang = hljs.getLanguage(lang)
+    const hljsLang = hljs?.getLanguage?.(lang)
     let langName = getLangName(lang)
 
     let useHLJS
