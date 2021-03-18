@@ -153,7 +153,6 @@ module.exports = class Settings extends React.PureComponent {
           options={[
             {
               name: 'Never',
-              desc: 'Always use the shiki highlighter.',
               value: 'never'
             },
             {
@@ -168,7 +167,6 @@ module.exports = class Settings extends React.PureComponent {
             },
             {
               name: 'Always',
-              desc: 'Always use the default highlighter.',
               value: 'always'
             }
           ]}
