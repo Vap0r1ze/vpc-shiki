@@ -27,13 +27,15 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
       lang,
       content,
       getHighlighter,
-      getLangName,
+      getLang,
       isPreview,
       tryHLJS,
+      useDevIcon,
     } = this.props
 
     const hljsLang = hljs?.getLanguage?.(lang)
-    let langName = getLangName(lang)
+    const shikiLang = getLang(lang)
+    let langName = shikiLang?.name
 
     let useHLJS
     switch (tryHLJS) {
@@ -74,7 +76,6 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
 
       try {
         tokens = highlighter.codeToThemedTokens(content, lang || 'NOT_A_REAL_LANG')
-        console.log(tokens)
       } catch (error) {
         tokens = content.split('\n').map(line => ([{ color: plainColor, content: line }]))
       }
@@ -103,7 +104,12 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
     return (
       <pre className={preClassName} style={{ backgroundColor, color: plainColor }}>
         <code>
-          {langName && <div className="vpc-shiki-lang">{langName}</div>}
+          {langName && <div className="vpc-shiki-lang">
+            {(useDevIcon !== 'false') && shikiLang?.devicon && <i className={`devicon-${shikiLang.devicon}${
+              useDevIcon === 'colored' ? ' colored' : ''
+            }`}/>}
+            {langName}
+          </div>}
           <table className="vpc-shiki-table">
             {...codeTableRows}
           </table>

@@ -47,7 +47,7 @@ module.exports = class Settings extends React.PureComponent {
       shiki,
       loadHighlighter,
       getHighlighter,
-      getLangName,
+      getLang,
       refreshCodeblocks
     } = this.props
 
@@ -63,9 +63,10 @@ module.exports = class Settings extends React.PureComponent {
         lang={data.lang}
         content={data.content}
         getHighlighter={getHighlighter}
-        getLangName={getLangName}
+        getLang={getLang}
         isPreview={true}
-        tryHLJS={getSetting('try-hljs')}
+        tryHLJS={getSetting('try-hljs', 'never')}
+        useDevIcon={getSetting('use-devicon', 'false')}
       >
         {this.state.isThemeLoading ? (
           <div class="vpc-shiki-spinner-container">
@@ -173,6 +174,29 @@ module.exports = class Settings extends React.PureComponent {
           note={<>Uses the more lightweight, <b>unthemed</b> default highlighter.</>}
         >
           Use Default Highlighter
+        </RadioGroup>
+        <RadioGroup
+          value={getSetting('use-devicon', 'false')}
+          onChange={({ value }) => {
+            updateSetting('use-devicon', value)
+            this.setState({ lastEdited: Date.now() })
+          }}
+          options={[
+            {
+              name: 'Disabled',
+              value: 'false'
+            },
+            {
+              name: 'Colorless',
+              value: 'colorless'
+            },
+            {
+              name: 'Colored',
+              value: 'colored'
+            }
+          ]}
+        >
+          Icons
         </RadioGroup>
       </div>
     )

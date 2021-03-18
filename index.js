@@ -26,7 +26,7 @@ module.exports = class ShikiCodeblocks extends Plugin {
         shiki,
         loadHighlighter: this.loadHighlighter.bind(this),
         getHighlighter: this.getHighlighter.bind(this),
-        getLangName: this.getLangName,
+        getLang: this.getLang,
         refreshCodeblocks: () => this.forceUpdate()
       })
     })
@@ -91,8 +91,9 @@ module.exports = class ShikiCodeblocks extends Plugin {
         lang,
         content,
         getHighlighter: this.getHighlighter.bind(this),
-        getLangName: this.getLangName,
+        getLang: this.getLang,
         tryHLJS: this.settings.get('try-hljs', 'never'),
+        useDevIcon: this.settings.get('use-devicon', 'false'),
       })
     }
   }
@@ -100,9 +101,8 @@ module.exports = class ShikiCodeblocks extends Plugin {
   getHighlighter () {
     return this.highlighter
   }
-  getLangName (id) {
-    const lang = languages.find(lang => [...(lang.aliases || []), lang.id].includes(id))
-    if (lang) return lang.name
+  getLang (id) {
+    return languages.find(lang => [...(lang.aliases || []), lang.id].includes(id))
   }
   forceUpdate () {
     document.querySelectorAll('[id^="chat-messages-"]').forEach(e => getReactInstance(e).memoizedProps.onMouseMove())

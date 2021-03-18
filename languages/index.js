@@ -46,6 +46,7 @@ module.exports = [
   {
     name: 'ASP.NET Razor',
     id: 'asp-net-razor',
+    devicon: 'dot-net-plain',
     scopeName: 'text.aspnetcorerazor',
     grammar: loadJSON('asp-net-razor.tmLanguage.json'),
     aliases: ['razor']
@@ -66,12 +67,14 @@ module.exports = [
   {
     name: 'C',
     id: 'c',
+    devicon: 'c-plain',
     scopeName: 'source.c',
     grammar: loadJSON('c.tmLanguage.json')
   },
   {
     name: 'Clojure',
     id: 'clojure',
+    devicon: 'clojure-line',
     scopeName: 'source.clojure',
     grammar: loadJSON('clojure.tmLanguage.json'),
     aliases: ['clj']
@@ -85,18 +88,21 @@ module.exports = [
   {
     name: 'CoffeeScript',
     id: 'coffee',
+    devicon: 'coffeescript-original',
     scopeName: 'source.coffee',
     grammar: loadJSON('coffee.tmLanguage.json')
   },
   {
     name: 'C++ Embedded Macro',
     id: 'cpp.embedded.macro',
+    devicon: 'cplusplus-plain',
     scopeName: 'source.cpp.embedded.macro',
     grammar: loadJSON('cpp.embedded.macro.tmLanguage.json')
   },
   {
     name: 'C++',
     id: 'cpp',
+    devicon: 'cplusplus-plain',
     scopeName: 'source.cpp',
     grammar: loadJSON('cpp.tmLanguage.json')
   },
@@ -109,6 +115,7 @@ module.exports = [
   {
     name: 'C#',
     id: 'csharp',
+    devicon: 'csharp-plain',
     scopeName: 'source.cs',
     grammar: loadJSON('csharp.tmLanguage.json'),
     aliases: ['c#', 'cs']
@@ -116,6 +123,7 @@ module.exports = [
   {
     name: 'CSS',
     id: 'css',
+    devicon: 'css3-plain',
     scopeName: 'source.css',
     grammar: loadJSON('css.tmLanguage.json')
   },
@@ -140,30 +148,35 @@ module.exports = [
   {
     name: 'Dockerfile',
     id: 'dockerfile',
+    devicon: 'docker-plain',
     scopeName: 'source.dockerfile',
     grammar: loadJSON('dockerfile.tmLanguage.json')
   },
   {
     name: 'Elixir',
     id: 'elixir',
+    devicon: 'elixir-plain',
     scopeName: 'source.elixir',
     grammar: loadJSON('elixir.tmLanguage.json')
   },
   {
     name: 'Elm',
     id: 'elm',
+    devicon: 'elm-plain',
     scopeName: 'source.elm',
     grammar: loadJSON('elm.tmLanguage.json')
   },
   {
     name: 'Erlang',
     id: 'erlang',
+    devicon: 'erlang-plain',
     scopeName: 'source.erlang',
     grammar: loadJSON('erlang.tmLanguage.json')
   },
   {
     name: 'F#',
     id: 'fsharp',
+    devicon: 'fsharp-plain',
     scopeName: 'source.fsharp',
     grammar: loadJSON('fsharp.tmLanguage.json'),
     aliases: ['f#']
@@ -189,6 +202,7 @@ module.exports = [
   {
     name: 'Go',
     id: 'go',
+    devicon: 'go-plain',
     scopeName: 'source.go',
     grammar: loadJSON('go.tmLanguage.json')
   },
@@ -201,6 +215,7 @@ module.exports = [
   {
     name: 'Groovy',
     id: 'groovy',
+    icon: 'groovy-plain',
     scopeName: 'source.groovy',
     grammar: loadJSON('groovy.tmLanguage.json')
   },
@@ -219,6 +234,7 @@ module.exports = [
   {
     name: 'Handlebars',
     id: 'handlebars',
+    devicon: 'handlebars-plain',
     scopeName: 'text.html.handlebars',
     grammar: loadJSON('handlebars.tmLanguage.json'),
     aliases: ['hbs']
@@ -226,6 +242,7 @@ module.exports = [
   {
     name: 'Haskell',
     id: 'haskell',
+    devicon: 'haskell-plain',
     scopeName: 'source.haskell',
     grammar: loadJSON('haskell.tmLanguage.json'),
     aliases: ['hs']
@@ -252,6 +269,7 @@ module.exports = [
   {
     name: 'HTML',
     id: 'html',
+    icon: 'html5-plain',
     scopeName: 'text.html.basic',
     grammar: loadJSON('html.tmLanguage.json')
   },
@@ -271,12 +289,14 @@ module.exports = [
   {
     name: 'Java',
     id: 'java',
+    devicon: 'java-plain',
     scopeName: 'source.java',
     grammar: loadJSON('java.tmLanguage.json')
   },
   {
     name: 'JavaScript',
     id: 'javascript',
+    devicon: 'javascript-plain',
     scopeName: 'source.js',
     grammar: loadJSON('javascript.tmLanguage.json'),
     aliases: ['js']
@@ -322,6 +342,7 @@ module.exports = [
   {
     name: 'JSX',
     id: 'jsx',
+    devicon: 'react-original',
     scopeName: 'documentation.injection.js.jsx',
     grammar: loadJSON('jsx.tmLanguage.json')
   },
@@ -335,6 +356,7 @@ module.exports = [
   {
     name: 'Kotlin',
     id: 'kotlin',
+    devicon: 'kotlin-plain',
     scopeName: 'source.kotlin',
     grammar: loadJSON('kotlin.tmLanguage.json'),
     aliases: ['kt', 'kts']
@@ -349,6 +371,7 @@ module.exports = [
   {
     name: 'Less',
     id: 'less',
+    devicon: 'less-plain-wordmark',
     scopeName: 'source.css.less',
     grammar: loadJSON('less.tmLanguage.json')
   },
@@ -386,6 +409,7 @@ module.exports = [
   {
     name: 'MATLAB',
     id: 'matlab',
+    devicon: 'matlab-plain',
     scopeName: 'source.matlab',
     grammar: loadJSON('matlab.tmLanguage.json')
   },
@@ -429,6 +453,7 @@ module.exports = [
   {
     name: 'Objective C',
     id: 'objective-c',
+    devicon: 'objectivec-plain',
     scopeName: 'source.objcpp',
     grammar: loadJSON('objective-c.tmLanguage.json'),
     aliases: ['objc']
@@ -436,6 +461,7 @@ module.exports = [
   {
     name: 'OCaml',
     id: 'ocaml',
+    devicon: 'ocaml-plain',
     scopeName: 'source.ocaml',
     grammar: loadJSON('ocaml.tmLanguage.json')
   },
@@ -468,6 +494,7 @@ module.exports = [
   {
     name: 'PHP Template',
     id: 'php-html',
+    devicon: 'php-plain',
     scopeName: 'text.html.php',
     grammar: loadJSON('php-html.tmLanguage.json'),
     aliases: ['phtml']
@@ -475,6 +502,7 @@ module.exports = [
   {
     name: 'PHP',
     id: 'php',
+    devicon: 'php-plain',
     scopeName: 'source.php',
     grammar: loadJSON('php.tmLanguage.json')
   },
@@ -532,6 +560,7 @@ module.exports = [
   {
     name: 'Python',
     id: 'python',
+    devicon: 'python-plain',
     scopeName: 'source.python',
     grammar: loadJSON('python.tmLanguage.json'),
     aliases: ['py']
@@ -539,12 +568,14 @@ module.exports = [
   {
     name: 'R',
     id: 'r',
+    devicon: 'r-original',
     scopeName: 'source.r',
     grammar: loadJSON('r.tmLanguage.json')
   },
   {
     name: 'ASP.NET Razor',
     id: 'razor',
+    devicon: 'dot-net-plain',
     scopeName: 'text.html.cshtml',
     grammar: loadJSON('razor.tmLanguage.json'),
     aliases: ['cshtml']
@@ -552,6 +583,7 @@ module.exports = [
   {
     name: 'Ruby',
     id: 'ruby',
+    devicon: 'ruby-plain',
     scopeName: 'source.ruby',
     grammar: loadJSON('ruby.tmLanguage.json'),
     aliases: ['rb']
@@ -559,6 +591,7 @@ module.exports = [
   {
     name: 'Rust',
     id: 'rust',
+    devicon: 'rust-plain',
     scopeName: 'source.rust',
     grammar: loadJSON('rust.tmLanguage.json')
   },
@@ -571,12 +604,14 @@ module.exports = [
   {
     name: 'Sass',
     id: 'sass',
+    devicon: 'sass-original',
     scopeName: 'source.sass',
     grammar: loadJSON('sass.tmLanguage.json')
   },
   {
     name: 'Scala',
     id: 'scala',
+    devicon: 'scala-plain',
     scopeName: 'source.scala',
     grammar: loadJSON('scala.tmLanguage.json')
   },
@@ -589,6 +624,7 @@ module.exports = [
   {
     name: 'SCSS',
     id: 'scss',
+    devicon: 'sass-original',
     scopeName: 'source.css.scss',
     grammar: loadJSON('scss.tmLanguage.json')
   },
@@ -602,6 +638,7 @@ module.exports = [
   {
     name: 'Shell',
     id: 'shellscript',
+    devicon: 'bash-plain',
     scopeName: 'source.shell',
     grammar: loadJSON('shellscript.tmLanguage.json'),
     aliases: ['shell', 'bash', 'sh', 'zsh']
@@ -633,6 +670,7 @@ module.exports = [
   {
     name: 'Stylus',
     id: 'stylus',
+    devicon: 'stylus-original',
     scopeName: 'source.stylus',
     grammar: loadJSON('stylus.tmLanguage.json'),
     aliases: ['styl']
@@ -640,6 +678,7 @@ module.exports = [
   {
     name: 'Swift',
     id: 'swift',
+    devicon: 'swift-plain',
     scopeName: 'source.swift',
     grammar: loadJSON('swift.tmLanguage.json')
   },
@@ -658,18 +697,21 @@ module.exports = [
   {
     name: 'TypeScript Doc',
     id: 'ts-doc',
+    devicon: 'typescript-plain',
     scopeName: 'documentation.injection.ts',
     grammar: loadJSON('ts.tmLanguage.json')
   },
   {
     name: 'TSX',
     id: 'tsx',
+    devicon: 'react-original',
     scopeName: 'source.tsx',
     grammar: loadJSON('tsx.tmLanguage.json')
   },
   {
     name: 'TypeScript',
     id: 'typescript',
+    devicon: 'typescript-plain',
     scopeName: 'source.ts',
     grammar: loadJSON('typescript.tmLanguage.json'),
     aliases: ['ts']
@@ -683,6 +725,7 @@ module.exports = [
   {
     name: 'Visual Basic .NET',
     id: 'vb',
+    devicon: 'dot-net-plain',
     scopeName: 'source.asp.vb.net',
     grammar: loadJSON('vb.tmLanguage.json'),
     aliases: ['cmd']
@@ -690,6 +733,7 @@ module.exports = [
   {
     name: 'VimL',
     id: 'viml',
+    devicon: 'vim-plain',
     scopeName: 'source.viml',
     grammar: loadJSON('viml.tmLanguage.json'),
     aliases: ['vim']
@@ -697,12 +741,14 @@ module.exports = [
   {
     name: 'Vue HTML',
     id: 'vue-html',
+    devicon: 'vuejs-plain',
     scopeName: 'text.html.vue-html',
     grammar: loadJSON('vue-html.tmLanguage.json')
   },
   {
     name: 'Vue',
     id: 'vue',
+    devicon: 'vuejs-plain',
     scopeName: 'source.vue',
     grammar: loadJSON('vue.tmLanguage.json')
   },
