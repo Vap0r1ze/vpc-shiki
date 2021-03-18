@@ -79,11 +79,12 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
         tokens = content.split('\n').map(line => ([{ color: plainColor, content: line }]))
       }
 
-      lines = tokens.map(line => line.map(({ content, color, style }) => (
+      lines = tokens.map(line => line.map(({ content, color, fontStyle }) => (
         <span style={{
           color,
-          fontStyle: style === 'italic' && style,
-          fontWeight: style === 'bold' && style,
+          fontStyle: (fontStyle & 1) && 'italic',
+          fontWeight: (fontStyle & 2) && 'bold',
+          textDecoration: (fontStyle & 4) && 'underline',
         }}>{content}</span>
       )))
     }
