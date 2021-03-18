@@ -59,8 +59,6 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
     const accentFgColor = theme?.colors?.['statusBar.foreground'] || '#FFF'
     const backgroundColor = theme?.colors?.['editor.background'] || 'var(--background-secondary)'
 
-    console.log(tryHLJS, useHLJS)
-
     let lines
 
     if (useHLJS) {

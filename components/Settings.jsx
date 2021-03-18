@@ -60,7 +60,6 @@ module.exports = class Settings extends React.PureComponent {
 
     const previews = previewsData.map(data => (
       <ShikiHighlighter
-        key={`preview-${Date.now()}`}
         lang={data.lang}
         content={data.content}
         getHighlighter={getHighlighter}
@@ -158,14 +157,14 @@ module.exports = class Settings extends React.PureComponent {
               value: 'never'
             },
             {
-              name: 'As Primary',
-              desc: 'Use the default highlighter with supported langauges, with shiki as a fallback.',
-              value: 'primary'
-            },
-            {
               name: 'As Secondary',
               desc: 'Use the default highlighter only with langauges missing in this plugin but supported by default.',
               value: 'secondary'
+            },
+            {
+              name: 'As Primary',
+              desc: 'Use the default highlighter with supported langauges, with shiki as a fallback.',
+              value: 'primary'
             },
             {
               name: 'Always',
