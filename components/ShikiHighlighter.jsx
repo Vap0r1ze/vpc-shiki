@@ -74,12 +74,17 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
 
       try {
         tokens = highlighter.codeToThemedTokens(content, lang || 'NOT_A_REAL_LANG')
+        console.log(tokens)
       } catch (error) {
         tokens = content.split('\n').map(line => ([{ color: plainColor, content: line }]))
       }
 
-      lines = tokens.map(line => line.map(({ content, color }) => (
-        <span style={{ color }}>{content}</span>
+      lines = tokens.map(line => line.map(({ content, color, style }) => (
+        <span style={{
+          color,
+          fontStyle: style === 'italic' && style,
+          fontWeight: style === 'bold' && style,
+        }}>{content}</span>
       )))
     }
 
