@@ -8,18 +8,16 @@ const FormItem = AsyncComponent.from(getModuleByDisplayName('FormItem'))
 
 const { marginBottom20 } = getModule(['marginBottom20'], false)
 const { dividerDefault } = getModule(['dividerDefault'], false)
+const { description } = getModule(['formText', 'description'], false)
 const { vertical, justifyStart, alignStretch, noWrap } = getModule(['vertical', 'justifyStart', 'alignStretch', 'noWrap'], false)
 
 module.exports = class SliderItem extends React.PureComponent {
   render () {
     return (
-      <FormItem title={this.props.children}>
-        {this.props.note && <FormText
-          className={`${vertical} ${justifyStart} ${alignStretch} ${noWrap} ${marginBottom20}`}
-          type="description"
-        >
-          {this.props.note}
-        </FormText>}
+      <FormItem
+        className={`${vertical} ${justifyStart} ${alignStretch} ${noWrap} ${marginBottom20}`}
+        title={this.props.children}
+      >
         <Slider
             initialValue={this.props.value}
             asValueChanges={value => this.props.onChange(value)}
@@ -29,6 +27,12 @@ module.exports = class SliderItem extends React.PureComponent {
             minValue={this.props.minValue}
             stickToMarkers={this.props.stickToMarkers || false}
         />
+        {this.props.note && <FormText
+          className={description}
+          type="description"
+        >
+          {this.props.note}
+        </FormText>}
         <FormDivider className={dividerDefault}/>
       </FormItem>
     )
