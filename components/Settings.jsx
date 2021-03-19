@@ -2,7 +2,6 @@ const { React } = require('powercord/webpack')
 const { SelectInput, TextInput, SwitchItem, RadioGroup, SliderInput } = require('powercord/components/settings')
 const { Spinner } = require('powercord/components')
 const { sleep } = require('powercord/util')
-const SliderItem = require('./SliderItem')
 const ShikiHighlighter = require('./ShikiHighlighter')
 const previewsData = require('../previews')
 
