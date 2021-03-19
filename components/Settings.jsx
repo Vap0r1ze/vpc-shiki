@@ -1,5 +1,5 @@
 const { React } = require('powercord/webpack')
-const { SelectInput, TextInput, SwitchItem, RadioGroup } = require('powercord/components/settings')
+const { SelectInput, TextInput, SwitchItem, RadioGroup, SliderInput } = require('powercord/components/settings')
 const { Spinner } = require('powercord/components')
 const { sleep } = require('powercord/util')
 const SliderItem = require('./SliderItem')
@@ -231,23 +231,24 @@ module.exports = class Settings extends React.PureComponent {
         >
           Icons
         </RadioGroup>
-        <SliderItem
-            value={getSetting('bg-opacity', 100)}
-            onChange={value => {
-              updateSetting('bg-opacity', value)
-              if (this.addLoadingCause('bgOpacity')) {
-                this.setState({ lastEdited: Date.now() })
-              }
-              this.debounce('bgOpacity', () => {
-                this.removeLoadingCause('bgOpacity')
-                this.setState({ lastEdited: Date.now() })
-              }, 200)
-            }}
-            maxValue={100}
-            minValue={0}
-          >
-            Background Opacity
-          </SliderItem>
+        <SliderInput
+          initialValue={getSetting('bg-opacity', 100)}
+          onValueChange={value => {
+            updateSetting('bg-opacity', value)
+            if (this.addLoadingCause('bgOpacity')) {
+              this.setState({ lastEdited: Date.now() })
+            }
+            this.debounce('bgOpacity', () => {
+              this.removeLoadingCause('bgOpacity')
+              this.setState({ lastEdited: Date.now() })
+            }, 200)
+          }}
+          minValue={0}
+          maxValue={100}
+          stickToMarkers={false}
+        >
+          Background Opacity
+        </SliderInput>
       </div>
     )
   }
