@@ -1,3 +1,4 @@
+const color2Rgba = require('../color2Rgba.min.js')
 const { React, hljs, i18n: { Messages } } = require('powercord/webpack')
 const { clipboard } = require('electron')
 
@@ -31,6 +32,7 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
       isPreview,
       tryHLJS,
       useDevIcon,
+      bgOpacity,
     } = this.props
 
     const hljsLang = hljs?.getLanguage?.(lang)
@@ -102,7 +104,12 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
     if (isPreview) preClassName += ' vpc-shiki-preview'
 
     return (
-      <pre className={preClassName} style={{ backgroundColor, color: plainColor }}>
+      <pre className={preClassName} style={{
+        backgroundColor: useHLJS
+          ? backgroundColor
+          : `rgba(${color2Rgba(backgroundColor).slice(0, 3).concat(bgOpacity / 100).join(', ')})`,
+        color: plainColor,
+      }}>
         <code>
           {langName && <div className="vpc-shiki-lang">
             {(useDevIcon !== 'false') && shikiLang?.devicon && <i className={`devicon-${shikiLang.devicon}${

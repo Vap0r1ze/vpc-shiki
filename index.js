@@ -13,7 +13,7 @@ const CDN_PATH = 'https://unpkg.com/shiki@0.9.3/'
 shiki.setCDN(CDN_PATH)
 
 module.exports = class ShikiCodeblocks extends Plugin {
-  startPlugin () {
+  async startPlugin () {
     this.loadStylesheet('style.css')
 
     powercord.api.settings.registerSettings('vpc-shiki', {
@@ -31,11 +31,9 @@ module.exports = class ShikiCodeblocks extends Plugin {
       })
     })
 
-    this.loadHighlighter()
-    .then(() => {
-      powercord.pluginManager.disable('pc-codeblocks')
-      this.patchCodeblocks()
-    })
+    await this.loadHighlighter()
+    powercord.pluginManager.disable('pc-codeblocks')
+    this.patchCodeblocks()
   }
 
   pluginWillUnload () {
@@ -94,6 +92,7 @@ module.exports = class ShikiCodeblocks extends Plugin {
         getLang: this.getLang,
         tryHLJS: this.settings.get('try-hljs', 'never'),
         useDevIcon: this.settings.get('use-devicon', 'false'),
+        bgOpacity:  this.settings.get('bg-opacity', 100),
       })
     }
   }

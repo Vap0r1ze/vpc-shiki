@@ -2,6 +2,7 @@ const { React } = require('powercord/webpack')
 const { SelectInput, TextInput, SwitchItem, RadioGroup } = require('powercord/components/settings')
 const { Spinner } = require('powercord/components')
 const { sleep } = require('powercord/util')
+const SliderItem = require('./SliderItem')
 const ShikiHighlighter = require('./ShikiHighlighter')
 const previewsData = require('../previews')
 
@@ -15,11 +16,12 @@ const LOAD_PADDING = 250
 
 module.exports = class Settings extends React.PureComponent {
   state = {
-    isThemeLoading: false,
+    themeLoadingCauses: [],
     isCustomThemeValid: true,
     customThemeIssue: null,
     lastEdited: Date.now(),
   }
+  debounces = {}
 
   humanizeTheme (theme) {
     return theme.split(/[^a-zA-Z0-9]/).map(w => w[0].toUpperCase() + w.slice(1)).join(' ')
@@ -38,6 +40,34 @@ module.exports = class Settings extends React.PureComponent {
   padPromise (promise) { // https://i.imgur.com/G7Qmfxj.png
     return Promise.all([promise, sleep(LOAD_PADDING)])
   }
+  addLoadingCause (cause) {
+    const { themeLoadingCauses } = this.state
+    if (themeLoadingCauses.indexOf(cause) === -1) {
+      this.setState({
+        themeLoadingCauses: [...themeLoadingCauses, cause]
+      })
+      return true
+    }
+    return false
+  }
+  removeLoadingCause (cause) {
+    const { themeLoadingCauses } = this.state
+    const index = themeLoadingCauses.indexOf(cause)
+    if (index >= 0) {
+      this.setState({
+        themeLoadingCauses: themeLoadingCauses.slice(0, index)
+          .concat(...themeLoadingCauses.slice(index + 1))
+      })
+      return true
+    }
+    return false
+  }
+  debounce (id, fn, wait) {
+    if (!this.debounces[id]) {
+      this.debounces[id] = _.debounce(fn => fn(), wait)
+    }
+    this.debounces[id](fn)
+  }
 
   render () {
     const {
@@ -51,10 +81,11 @@ module.exports = class Settings extends React.PureComponent {
       refreshCodeblocks
     } = this.props
 
-    if (!this.state.isThemeLoading && !getHighlighter()) {
-      this.setState({ isThemeLoading: true })
+    if (!this.state.themeLoadingCauses.length && !getHighlighter()) {
+      const highlighterCause = Date.now()
+      this.addLoadingCause(highlighterCause)
       loadHighlighter().then(() => {
-        this.setState({ isThemeLoading: false })
+        this.removeLoadingCause(highlighterCause)
       })
     }
 
@@ -67,8 +98,9 @@ module.exports = class Settings extends React.PureComponent {
         isPreview={true}
         tryHLJS={getSetting('try-hljs', 'never')}
         useDevIcon={getSetting('use-devicon', 'false')}
+        bgOpacity={getSetting('bg-opacity', 100)}
       >
-        {this.state.isThemeLoading ? (
+        {this.state.themeLoadingCauses.length ? (
           <div class="vpc-shiki-spinner-container">
             <Spinner type="spinningCircle"/>
           </div>
@@ -98,9 +130,10 @@ module.exports = class Settings extends React.PureComponent {
         <SelectInput
           onChange={({ value }) => {
             updateSetting('theme', value)
-            this.setState({ isThemeLoading: true })
+            const themeCause = Date.now()
+            this.addLoadingCause(themeCause)
             this.padPromise(loadHighlighter()).then(() => {
-              this.setState({ isThemeLoading: false })
+              this.removeLoadingCause(themeCause)
               refreshCodeblocks()
             })
           }}
@@ -121,19 +154,19 @@ module.exports = class Settings extends React.PureComponent {
             const issue = this.getCustomThemeIssue(value)
             if (!issue) {
               updateSetting('custom-theme', value)
+              const themeCause = Date.now()
+              this.addLoadingCause(themeCause)
               this.padPromise(loadHighlighter()).then(() => {
-                this.setState({ isThemeLoading: false })
+                this.removeLoadingCause(themeCause)
                 refreshCodeblocks()
               })
               this.setState({
-                isThemeLoading: true,
                 lastEdited: Date.now(),
                 isCustomThemeValid: true,
                 customThemeIssue: null,
               })
             } else {
               this.setState({
-                isThemeLoading: false,
                 lastEdited: Date.now(),
                 isCustomThemeValid: false,
                 customThemeIssue: CUSTOM_THEME_ISSUES[issue - 1],
@@ -198,6 +231,23 @@ module.exports = class Settings extends React.PureComponent {
         >
           Icons
         </RadioGroup>
+        <SliderItem
+            value={getSetting('bg-opacity', 100)}
+            onChange={value => {
+              updateSetting('bg-opacity', value)
+              if (this.addLoadingCause('bgOpacity')) {
+                this.setState({ lastEdited: Date.now() })
+              }
+              this.debounce('bgOpacity', () => {
+                this.removeLoadingCause('bgOpacity')
+                this.setState({ lastEdited: Date.now() })
+              }, 200)
+            }}
+            maxValue={100}
+            minValue={0}
+          >
+            Background Opacity
+          </SliderItem>
       </div>
     )
   }
