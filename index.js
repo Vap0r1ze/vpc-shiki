@@ -32,14 +32,19 @@ module.exports = class ShikiCodeblocks extends Plugin {
     })
 
     await this.loadHighlighter()
-    powercord.pluginManager.disable('pc-codeblocks')
+    try {
+      powercord.pluginManager.disable('pc-codeblocks')
+      this.shouldReenablePCCB = true
+    } catch {
+      this.shouldReenablePCCB = false
+    }
     this.patchCodeblocks()
   }
 
   pluginWillUnload () {
     uninject('vpc-shiki-format')
     powercord.api.settings.unregisterSettings('vpc-shiki')
-    powercord.pluginManager.enable('pc-codeblocks')
+    if (this.shouldReenablePCCB) powercord.pluginManager.enable('pc-codeblocks')
     this.forceUpdate()
   }
 
