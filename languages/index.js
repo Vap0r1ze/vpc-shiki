@@ -38,6 +38,12 @@ module.exports = [
     grammar: loadJSON('applescript.tmLanguage.json')
   },
   {
+    name: 'AsciiDoc',
+    id: 'asciidoc',
+    scopeName: 'text.asciidoc',
+    grammar: loadJSON('asciidoc.tmLanguage.json')
+  },
+  {
     name: 'Assembly x64',
     id: 'asm',
     scopeName: 'source.asm.x86_64',
@@ -299,7 +305,7 @@ module.exports = [
     devicon: 'javascript-plain',
     scopeName: 'source.js',
     grammar: loadJSON('javascript.tmLanguage.json'),
-    aliases: ['js']
+    aliases: ['js', 'esm', 'cjs']
   },
   {
     name: 'Jinja Template',
@@ -343,8 +349,8 @@ module.exports = [
     name: 'JSX',
     id: 'jsx',
     devicon: 'react-original',
-    scopeName: 'documentation.injection.js.jsx',
-    grammar: loadJSON('jsx.tmLanguage.json')
+    scopeName: 'source.js',
+    grammar: loadJSON('javascript.tmLanguage.json'),
   },
   {
     name: 'Julia',
