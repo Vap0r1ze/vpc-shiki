@@ -350,7 +350,7 @@ module.exports = [
     id: 'jsx',
     devicon: 'react-original',
     scopeName: 'source.js',
-    grammar: loadJSON('javascript.tmLanguage.json'),
+    grammar: loadJSON('javascript.tmLanguage.json')
   },
   {
     name: 'Julia',
