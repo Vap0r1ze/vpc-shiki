@@ -70,7 +70,7 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
       try {
         const { value: hljsHtml } = hljs.highlight(lang, content, true)
         lines = hljsHtml.split('\n').map(line => <span dangerouslySetInnerHTML={{ __html: line }}/>)
-      } catch (error) {
+      } catch {
         lines = content.split('\n').map(line => <span>{line}</span>)
       }
     } else {
@@ -78,18 +78,26 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
 
       try {
         tokens = highlighter.codeToThemedTokens(content, lang || 'NOT_A_REAL_LANG')
-      } catch (error) {
+      } catch {
         tokens = content.split('\n').map(line => ([{ color: plainColor, content: line }]))
       }
 
-      lines = tokens.map(line => line.map(({ content, color, fontStyle }) => (
-        <span style={{
-          color,
-          fontStyle: (fontStyle & 1) && 'italic',
-          fontWeight: (fontStyle & 2) && 'bold',
-          textDecoration: (fontStyle & 4) && 'underline',
-        }}>{content}</span>
-      )))
+      lines = tokens.map(line => {
+        // [Cynthia] this makes it so when you highlight the codeblock
+        // empty lines are also selected and copied when you Ctrl+C.
+        if (line.length === 0) {
+          return React.createElement('span', null, '\n')
+        }
+
+        return line.map(({ content, color, fontStyle }) => (
+          <span style={{
+            color,
+            fontStyle: (fontStyle & 1) && 'italic',
+            fontWeight: (fontStyle & 2) && 'bold',
+            textDecoration: (fontStyle & 4) && 'underline',
+          }}>{content}</span>
+        ))
+      })
     }
 
     const codeTableRows = lines.map((line, i) => (

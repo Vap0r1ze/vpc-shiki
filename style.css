@@ -61,10 +61,13 @@
   margin-bottom: 6px;
   font-weight: bold;
   text-transform: capitalize;
+  display: flex;
+  align-items: center;
 }
 
 .vpc-shiki-table {
   border-collapse: collapse;
+  width: 100%;
 }
 
 .vpc-shiki-table tr {
@@ -82,4 +85,5 @@
 .vpc-shiki td:last-child {
   padding-left: 8px;
   word-break: break-word;
+  width: 100%;
 }

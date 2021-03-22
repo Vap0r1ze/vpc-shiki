@@ -76,8 +76,6 @@ module.exports = class ShikiCodeblocks extends Plugin {
 
       return res
     })
-
-    this.forceUpdate()
   }
 
   injectCodeblock (args, res) {
