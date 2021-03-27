@@ -599,7 +599,8 @@ module.exports = [
     id: 'rust',
     devicon: 'rust-plain',
     scopeName: 'source.rust',
-    grammar: loadJSON('rust.tmLanguage.json')
+    grammar: loadJSON('rust.tmLanguage.json'),
+    aliases: ['rs']
   },
   {
     name: 'SAS',
