@@ -3,8 +3,10 @@ const { React, hljs, i18n: { Messages } } = require('powercord/webpack')
 const { clipboard } = require('electron')
 
 module.exports = class ShikiHighlighter extends React.PureComponent {
+  ref = React.createRef()
   state = {
-    copyCooldown: false
+    copyCooldown: false,
+    tokens: null
   }
 
   onCopyBtnClick () {
@@ -23,6 +25,32 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
     clipboard.writeText(this.props.content)
   }
 
+  componentDidMount () {
+    const { content, lang, getHighlighter } = this.props
+    if (!lang || this.shouldUseHLJS()) return
+
+    this.observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          try {
+            const highlighter = getHighlighter()
+            this.setState({ tokens: highlighter.codeToThemedTokens(content, lang) })
+          } catch (e) {
+            // Silently ignore
+          }
+
+          this.observer.disconnect()
+        }
+      }
+    })
+
+    this.observer.observe(this.ref.current)
+  }
+
+  componentWillUnmount () {
+    this.observer?.disconnect()
+  }
+
   render () {
     const {
       lang,
@@ -30,7 +58,6 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
       getHighlighter,
       getLang,
       isPreview,
-      tryHLJS,
       useDevIcon,
       bgOpacity,
     } = this.props
@@ -39,22 +66,7 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
     const shikiLang = getLang(lang)
     let langName = shikiLang?.name
 
-    let useHLJS
-    switch (tryHLJS) {
-      case 'always':
-        useHLJS = true
-        break
-      case 'primary':
-        useHLJS = !!hljsLang || lang === ''
-        break
-      case 'secondary':
-        useHLJS = !langName && !!hljsLang
-        break
-      case 'never':
-        useHLJS = false
-        break
-    }
-
+    const useHLJS = this.shouldUseHLJS()
     const highlighter = getHighlighter()
 
     const theme = useHLJS ? null : highlighter?.getTheme?.()?._theme
@@ -74,11 +86,8 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
         lines = content.split('\n').map(line => <span>{line}</span>)
       }
     } else {
-      let tokens
-
-      try {
-        tokens = highlighter.codeToThemedTokens(content, lang || 'NOT_A_REAL_LANG')
-      } catch {
+      let tokens = this.state.tokens
+      if (!tokens) {
         tokens = content.split('\n').map(line => ([{ color: plainColor, content: line }]))
       }
 
@@ -112,7 +121,7 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
     if (isPreview) preClassName += ' vpc-shiki-preview'
 
     return (
-      <pre className={preClassName} style={{
+      <pre ref={this.ref} className={preClassName} style={{
         backgroundColor: useHLJS
           ? backgroundColor
           : `rgba(${color2Rgba(backgroundColor).slice(0, 3).concat(bgOpacity / 100).join(', ')})`,
@@ -137,5 +146,26 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
         </code>
       </pre>
     )
+  }
+
+  shouldUseHLJS () {
+    const { lang, getLang, tryHLJS } = this.props
+
+    const hljsLang = hljs?.getLanguage?.(lang)
+    const shikiLang = getLang(lang)
+    const langName = shikiLang?.name
+
+    switch (tryHLJS) {
+      case 'always':
+        return true
+      case 'primary':
+        return !!hljsLang || lang === ''
+      case 'secondary':
+        return !langName && !!hljsLang
+      case 'never':
+        return false
+    }
+
+    return false
   }
 }
