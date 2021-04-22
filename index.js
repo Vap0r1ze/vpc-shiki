@@ -109,6 +109,6 @@ module.exports = class ShikiCodeblocks extends Plugin {
     return languages.find(lang => [...(lang.aliases || []), lang.id].includes(id))
   }
   forceUpdate () {
-    document.querySelectorAll('[id^="chat-messages-"]').forEach(e => getReactInstance(e).memoizedProps.onMouseMove())
+    document.querySelectorAll('[id^="chat-messages-"]').forEach(e => getReactInstance(e)?.memoizedProps?.onMouseMove?.call())
   }
 }
