@@ -40,11 +40,15 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
       this.setState({
         copyCooldown: false
       })
-    })
+    }, 1000)
 
-    try { // TODO: Automatic Language Recognition
-      fs.writeFileSync(filePath, this.props.content);
-      setTimeout(() => {open(vscodeURI);}, 1000);
+    try { //TODO: Automatical tempFile Removal. Currently creates a new file For every new Lang.
+
+      let language = '.'+this.props.lang
+      if (!this.props.lang) {language = ''}
+
+      fs.writeFileSync(filePath+language, this.props.content);
+      setTimeout(() => {open(vscodeURI+language);}, 500); //making sure the file has been written in time
     } catch {
       console.log("Could not Write File");
     }
