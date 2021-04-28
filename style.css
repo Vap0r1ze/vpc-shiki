@@ -36,7 +36,21 @@
   opacity: 0;
 }
 
+.vpc-shiki-vscode-btn {
+  border-radius: 4px 0;
+  padding: 4px 8px;
+  position: absolute;
+  font-size: 1em;
+  top: 0;
+  right: 0;
+  opacity: 0;
+}
+
 .vpc-shiki:not(.vpc-shiki-preview):hover .vpc-shiki-copy-btn {
+  opacity: 1;
+}
+
+.vpc-shiki:not(.vpc-shiki-preview):hover .vpc-shiki-vscode-btn {
   opacity: 1;
 }
 

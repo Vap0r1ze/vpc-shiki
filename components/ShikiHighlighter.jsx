@@ -1,6 +1,10 @@
 const color2Rgba = require('../color2Rgba.min.js')
 const { React, hljs, i18n: { Messages } } = require('powercord/webpack')
 const { clipboard } = require('electron')
+const fs = require('fs')
+const path = require('path')
+const filePath = path.join(__dirname, 'tempFile')
+const vscodeURI = 'vscode://file/' + filePath
 
 module.exports = class ShikiHighlighter extends React.PureComponent {
   ref = React.createRef()
@@ -23,6 +27,27 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
     }, 1000)
 
     clipboard.writeText(this.props.content)
+  }
+
+  openInVSC () {
+    if (this.state.copyCooldown) return
+
+    this.setState({
+      copyCooldown: true
+    })
+
+    setTimeout(() => {
+      this.setState({
+        copyCooldown: false
+      })
+    })
+
+    try { // TODO: Automatic Language Recognition
+      fs.writeFileSync(filePath, this.props.content);
+      setTimeout(() => {open(vscodeURI);}, 1000);
+    } catch {
+      console.log("Could not Write File");
+    }
   }
 
   componentDidMount () {
@@ -134,6 +159,11 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
             }`}/>}
             {langName}
           </div>}
+          <button className="vpc-shiki-vscode-btn" onClick={this.openInVSC.bind(this)} style={{
+            backgroundColor: accentBgColor,
+            color: accentFgColor,
+            cursor: this.state.copyCooldown ? 'default' : null
+          }}>{this.state.copyCooldown ? 'Opened VSCode!' : 'VSCode'}</button>
           <table className="vpc-shiki-table">
             {...codeTableRows}
           </table>
