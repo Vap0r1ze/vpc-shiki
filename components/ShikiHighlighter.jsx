@@ -42,7 +42,13 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
       })
     }, 1000)
 
-    try { //TODO: Automatical tempFile Removal. Currently creates a new file For every new Lang.
+    try {
+
+      try {
+        const path = __dirname + '/'
+        let regex = /tempFile/
+        fs.readdirSync(path).filter(f => regex.test(f)).map(f => fs.unlinkSync(path + f))}
+      catch {console.log('No File Present, Skipping.')}
 
       let language = '.'+this.props.lang
       if (!this.props.lang) {language = ''}
