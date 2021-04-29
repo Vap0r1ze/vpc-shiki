@@ -55,7 +55,7 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
       if (!this.props.lang) {language = ''}
 
       fs.writeFileSync(filePath+language, this.props.content);
-      setTimeout(() => {open(vscodeURI+language);}, 500); //making sure the file has been written in time
+      open(vscodeURI+language); //making sure the file has been written in time
     } catch {
       console.log("Could not Write File");
     }
