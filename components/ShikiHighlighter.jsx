@@ -10,6 +10,7 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
   ref = React.createRef()
   state = {
     copyCooldown: false,
+    vscodeCooldown: false,
     tokens: null
   }
 
@@ -30,15 +31,15 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
   }
 
   openInVSC () {
-    if (this.state.copyCooldown) return
+    if (this.state.vscodeCooldown) return
 
     this.setState({
-      copyCooldown: true
+      vscodeCooldown: true
     })
 
     setTimeout(() => {
       this.setState({
-        copyCooldown: false
+        vscodeCooldown: false
       })
     }, 1000)
 
@@ -172,8 +173,8 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
           <button className="vpc-shiki-vscode-btn" onClick={this.openInVSC.bind(this)} style={{
             backgroundColor: accentBgColor,
             color: accentFgColor,
-            cursor: this.state.copyCooldown ? 'default' : null
-          }}>{this.state.copyCooldown ? 'Opened VSCode!' : 'VSCode'}</button>
+            cursor: this.state.vscodeCooldown ? 'default' : null
+          }}>{this.state.vscodeCooldown ? 'Opened VSCode!' : 'VSCode'}</button>
           <table className="vpc-shiki-table">
             {...codeTableRows}
           </table>
