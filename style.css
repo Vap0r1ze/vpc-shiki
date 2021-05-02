@@ -26,32 +26,26 @@
   padding-top: 8px;
 }
 
-.vpc-shiki-copy-btn {
-  border-radius: 4px 0;
-  padding: 4px 8px;
-  position: absolute;
+.vpc-shiki-btns {
   font-size: 1em;
+  position: absolute;
   right: 0;
   bottom: 0;
   opacity: 0;
 }
+.vpc-shiki:not(.vpc-shiki-preview):hover .vpc-shiki-btns {
+  opacity: 1;
+}
 
-.vpc-shiki-vscode-btn {
-  border-radius: 4px 0;
+.vpc-shiki-btn {
+  border-radius: 4px 4px 0 0;
   padding: 4px 8px;
-  position: absolute;
-  font-size: 1em;
-  top: 0;
-  right: 0;
-  opacity: 0;
 }
-
-.vpc-shiki:not(.vpc-shiki-preview):hover .vpc-shiki-copy-btn {
-  opacity: 1;
+.vpc-shiki-btn ~ .vpc-shiki-btn {
+  margin-left: 4px;
 }
-
-.vpc-shiki:not(.vpc-shiki-preview):hover .vpc-shiki-vscode-btn {
-  opacity: 1;
+.vpc-shiki-btn:last-child {
+  border-radius: 4px 0;
 }
 
 .vpc-shiki-spinner-container {
