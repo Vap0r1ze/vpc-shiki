@@ -3,8 +3,10 @@ const { React, hljs, i18n: { Messages } } = require('powercord/webpack')
 const { clipboard } = require('electron')
 const fs = require('fs')
 const path = require('path')
-const filePath = path.join(__dirname, 'tempFile')
-const vscodeURI = 'vscode://file/' + filePath
+
+const tempFileDir = path.join(__dirname, '../tempFiles')
+const getTempFilePath = fileName => path.join(tempFileDir, fileName)
+const getVscodeUrl = filePath => new URL(filePath, 'vscode://file/').href
 
 module.exports = class ShikiHighlighter extends React.PureComponent {
   ref = React.createRef()
@@ -30,34 +32,43 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
     clipboard.writeText(this.props.content)
   }
 
-  openInVSC () {
+  onVscodeBtnClick () {
     if (this.state.vscodeCooldown) return
 
-    this.setState({
+    let postClickState = {
       vscodeCooldown: true
+    }
+
+    if (!fs.existsSync(tempFileDir)) fs.mkdirSync(tempFileDir)
+
+    fs.readdirSync(tempFileDir).map(fileName => {
+      try {
+        fs.unlinkSync(path.join(tempFileDir, fileName))
+      } catch {}
     })
 
-    setTimeout(() => {
-      this.setState({
-        vscodeCooldown: false
-      })
-    }, 1000)
+    const tempFileName = this.props.lang
+      ? 'tempFile.' + this.props.lang
+      : 'tempFile'
+    const tempFilePath = getTempFilePath(tempFileName)
 
     try {
+      fs.writeFileSync(tempFilePath, this.props.content)
+      window.open(getVscodeUrl(tempFilePath))
+    } catch (error) {
+      console.error(error)
+      postClickState = {
+        vscodeCooldown: false
+      }
+    }
 
-      try {
-        const path = __dirname + '/'
-        let regex = /tempFile/
-        fs.readdirSync(path).filter(f => regex.test(f)).map(f => fs.unlinkSync(path + f))}
-      catch {console.log('No File Present, Skipping.')}
-
-      let language = '.'+this.props.lang
-      if (!this.props.lang) {language = ''}
-
-      fs.writeFileSync(filePath+language, this.props.content);
-      open(vscodeURI+language);
-    } catch {
-      console.log("Could not Write File");
+    if (postClickState.vscodeCooldown) {
+      this.setState(postClickState)
+      setTimeout(() => {
+        this.setState({
+          vscodeCooldown: false
+        })
+      }, 1000)
     }
   }
 
@@ -170,19 +181,21 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
             }`}/>}
             {langName}
           </div>}
-          <button className="vpc-shiki-vscode-btn" onClick={this.openInVSC.bind(this)} style={{
-            backgroundColor: accentBgColor,
-            color: accentFgColor,
-            cursor: this.state.vscodeCooldown ? 'default' : null
-          }}>{this.state.vscodeCooldown ? 'Opened VSCode!' : 'VSCode'}</button>
           <table className="vpc-shiki-table">
             {...codeTableRows}
           </table>
-          <button className="vpc-shiki-copy-btn" onClick={this.onCopyBtnClick.bind(this)} style={{
-            backgroundColor: accentBgColor,
-            color: accentFgColor,
-            cursor: this.state.copyCooldown ? 'default' : null
-          }}>{this.state.copyCooldown ? Messages.ACCOUNT_USERNAME_COPY_SUCCESS_1 : Messages.COPY}</button>
+          <div className="vpc-shiki-btns">
+            <button className="vpc-shiki-btn" onClick={this.onVscodeBtnClick.bind(this)} style={{
+              backgroundColor: accentBgColor,
+              color: accentFgColor,
+              cursor: this.state.vscodeCooldown ? 'default' : null
+            }}>{this.state.vscodeCooldown ? 'Opened VSCode!' : 'VSCode'}</button>
+            <button className="vpc-shiki-btn" onClick={this.onCopyBtnClick.bind(this)} style={{
+              backgroundColor: accentBgColor,
+              color: accentFgColor,
+              cursor: this.state.copyCooldown ? 'default' : null
+            }}>{this.state.copyCooldown ? Messages.ACCOUNT_USERNAME_COPY_SUCCESS_1 : Messages.COPY}</button>
+          </div>
           {this.props.children}
         </code>
       </pre>
