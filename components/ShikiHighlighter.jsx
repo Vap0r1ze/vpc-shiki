@@ -3,10 +3,14 @@ const { React, hljs, i18n: { Messages } } = require('powercord/webpack')
 const { clipboard } = require('electron')
 const fs = require('fs')
 const path = require('path')
+const os = require('os')
 
 const tempFileDir = path.join(__dirname, '../tempFiles')
 const getTempFilePath = fileName => path.join(tempFileDir, fileName)
-const getVscodeUrl = filePath => new URL(filePath, 'vscode://file/').href
+const getVscodeUrl = filePath => {
+  if (os.platform() === 'win32') return 'vscode://file/' + filePath
+  return new URL(filePath, 'vscode://file/').href
+}
 
 module.exports = class ShikiHighlighter extends React.PureComponent {
   ref = React.createRef()
