@@ -5,7 +5,7 @@ const { sleep } = require('powercord/util')
 const ShikiHighlighter = require('./ShikiHighlighter')
 const previewsData = require('../previews')
 
-const ERROR_COLOR = '#f04747'
+const ERROR_COLOR = 'var(--text-danger)'
 const CUSTOM_THEME_ISSUES = [
   'Invalid URL.',
   'The theme must be a json file with the vscode color theme schema.',
