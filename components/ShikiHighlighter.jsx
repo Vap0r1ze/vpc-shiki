@@ -77,6 +77,16 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
   }
 
   componentDidMount () {
+    this.lazilyHighlight()
+  }
+
+  componentDidUpdate (prevProps) {
+    if (prevProps.content !== this.props.content || prevProps.lang !== this.props.lang) {
+      this.lazilyHighlight()
+    }
+  }
+
+  lazilyHighlight () {
     const { content, lang, getHighlighter } = this.props
     if (!lang || this.shouldUseHLJS()) return
 
