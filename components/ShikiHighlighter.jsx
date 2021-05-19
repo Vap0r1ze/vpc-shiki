@@ -130,7 +130,7 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
     const useHLJS = this.shouldUseHLJS()
     const highlighter = getHighlighter()
 
-    const theme = useHLJS ? null : highlighter?.getTheme?.()?._theme
+    const theme = useHLJS ? null : highlighter?.getTheme()
     const plainColor = theme?.fg || 'var(--text-normal)'
     const accentBgColor = theme?.colors?.['statusBar.background'] || (useHLJS ? '#7289da' : '#007BC8')
     const accentFgColor = theme?.colors?.['statusBar.foreground'] || '#FFF'
