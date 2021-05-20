@@ -1,0 +1,54 @@
+diff --git a/packages/shiki/src/languages.ts b/packages/shiki/src/languages.ts
+index ac18f90..9014dc5 100644
+--- a/packages/shiki/src/languages.ts
++++ b/packages/shiki/src/languages.ts
+@@ -117,7 +117,8 @@ export type Lang =
+   | 'xsl'
+   | 'yaml'
+
+-export const languages: ILanguageRegistration[] = [
++export const languages = []
++const _languages: ILanguageRegistration[] = [
+   {
+     id: 'abap',
+     scopeName: 'source.abap',
+diff --git a/packages/shiki/src/themedTokenizer.ts b/packages/shiki/src/themedTokenizer.ts
+index 761b727..2976e54 100644
+--- a/packages/shiki/src/themedTokenizer.ts
++++ b/packages/shiki/src/themedTokenizer.ts
+@@ -5,6 +5,7 @@
+
+ import { IGrammar, StackElement, IRawTheme, IRawThemeSetting } from 'vscode-textmate'
+ import { FontStyle, StackElementMetadata } from './stackElementMetadata'
++import { themes } from './themes'
+
+ export interface IThemedTokenScopeExplanation {
+   scopeName: string
+@@ -217,11 +218,19 @@ function matches(
+   return false
+ }
+
++const themeScopeCache: Map<string, IRawThemeSetting[]> = new Map()
++
+ function explainThemeScope(
+   theme: IRawTheme,
+   scope: string,
+   parentScopes: string[]
+ ): IRawThemeSetting[] {
++  const cacheKey = `${theme.name} ${scope} ${parentScopes.sort().join(' ')}`
++  const cachedResult = themeScopeCache.get(cacheKey)
++  if (theme.name && cachedResult) {
++    return cachedResult
++  }
++
+   let result: IRawThemeSetting[] = [],
+     resultLen = 0
+   for (let i = 0, len = theme.settings.length; i < len; i++) {
+@@ -249,5 +259,7 @@ function explainThemeScope(
+       }
+     }
+   }
++
++  themeScopeCache.set(cacheKey, result)
+   return result
+ }
