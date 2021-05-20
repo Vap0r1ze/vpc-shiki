@@ -13,18 +13,10 @@ index ac18f90..9014dc5 100644
      id: 'abap',
      scopeName: 'source.abap',
 diff --git a/packages/shiki/src/themedTokenizer.ts b/packages/shiki/src/themedTokenizer.ts
-index 761b727..2976e54 100644
+index 761b727..14ca541 100644
 --- a/packages/shiki/src/themedTokenizer.ts
 +++ b/packages/shiki/src/themedTokenizer.ts
-@@ -5,6 +5,7 @@
-
- import { IGrammar, StackElement, IRawTheme, IRawThemeSetting } from 'vscode-textmate'
- import { FontStyle, StackElementMetadata } from './stackElementMetadata'
-+import { themes } from './themes'
-
- export interface IThemedTokenScopeExplanation {
-   scopeName: string
-@@ -217,11 +218,19 @@ function matches(
+@@ -217,11 +217,19 @@ function matches(
    return false
  }
 
@@ -44,7 +36,7 @@ index 761b727..2976e54 100644
    let result: IRawThemeSetting[] = [],
      resultLen = 0
    for (let i = 0, len = theme.settings.length; i < len; i++) {
-@@ -249,5 +259,7 @@ function explainThemeScope(
+@@ -249,5 +257,7 @@ function explainThemeScope(
        }
      }
    }
