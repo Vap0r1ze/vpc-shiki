@@ -206,6 +206,12 @@ module.exports = [
     grammar: loadJSON('gnuplot.tmLanguage.json')
   },
   {
+    name: 'GDScript',
+    id: 'gdscript',
+    scopeName: 'source.gdscript',
+    grammar: loadJSON('GDScript.tmLanguage.json')
+  },
+  {
     name: 'Go',
     id: 'go',
     devicon: 'go-plain',
