@@ -209,7 +209,8 @@ module.exports = [
     name: 'GDScript',
     id: 'gdscript',
     scopeName: 'source.gdscript',
-    grammar: loadJSON('GDScript.tmLanguage.json')
+    grammar: loadJSON('GDScript.tmLanguage.json'),
+    aliases: ['godot', 'gds', 'gd']
   },
   {
     name: 'Go',
