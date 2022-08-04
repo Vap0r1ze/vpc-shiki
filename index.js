@@ -6,11 +6,8 @@ const { getReactInstance } = require('powercord/util')
 const Settings = require('./components/Settings.jsx')
 const ShikiHighlighter = require('./components/ShikiHighlighter.jsx')
 const languages = require('./languages')
-const { shiki } = require('./shiki.min.js')
-
-const CDN_PATH = 'https://unpkg.com/shiki@0.9.3/'
-
-shiki.setCDN(CDN_PATH)
+const themes = require('./themes')
+const shiki = require('./modules/shiki')
 
 module.exports = class ShikiCodeblocks extends Plugin {
   async startPlugin () {
@@ -49,21 +46,17 @@ module.exports = class ShikiCodeblocks extends Plugin {
   }
 
   async loadHighlighter (theme) {
-    if (!theme) theme = this.settings.get('theme', shiki.BUNDLED_THEMES[0])
+    if (!theme) theme = this.settings.get('theme', Object.keys(themes)[0])
     const customThemeHref = this.settings.get('custom-theme')
     if (customThemeHref) {
       try {
-        const tempCDN = customThemeHref.split('/').slice(0, -2).join('/') + '/'
-        shiki.setCDN(tempCDN)
-        const tempThemeFile = customThemeHref.split('/').slice(-2).join('/')
-        const customTheme = await shiki.loadTheme(tempThemeFile)
-        shiki.setCDN(CDN_PATH)
+        const customTheme = await shiki.loadTheme(customThemeHref)
         return this.highlighter = await shiki.getHighlighter({
           theme: customTheme,
           langs: languages
         })
       } catch (error) {
-        shiki.setCDN(CDN_PATH)
+        console.error(error)
       }
     }
 

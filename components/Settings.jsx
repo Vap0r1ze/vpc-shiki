@@ -3,6 +3,7 @@ const { SelectInput, TextInput, SwitchItem, RadioGroup, SliderInput } = require(
 const { Spinner } = require('powercord/components')
 const { sleep } = require('powercord/util')
 const ShikiHighlighter = require('./ShikiHighlighter')
+const themes = require('../themes')
 const previewsData = require('../previews')
 
 const ERROR_COLOR = 'var(--text-danger)'
@@ -22,9 +23,6 @@ module.exports = class Settings extends React.PureComponent {
   }
   debounces = {}
 
-  humanizeTheme (theme) {
-    return theme.split(/[^a-zA-Z0-9]/).map(w => w[0].toUpperCase() + w.slice(1)).join(' ')
-  }
   getCustomThemeIssue (href) {
     if (!href) return 0
     try {
@@ -72,8 +70,6 @@ module.exports = class Settings extends React.PureComponent {
     const {
       getSetting,
       updateSetting,
-      toggleSetting,
-      shiki,
       loadHighlighter,
       getHighlighter,
       getLang,
@@ -136,11 +132,11 @@ module.exports = class Settings extends React.PureComponent {
               refreshCodeblocks()
             })
           }}
-          options={shiki.BUNDLED_THEMES.map(theme => ({
-            label: this.humanizeTheme(theme),
+          options={Object.keys(themes).map(theme => ({
+            label: themes[theme],
             value: theme,
           }))}
-          value={getSetting('theme', shiki.BUNDLED_THEMES[0])}
+          value={getSetting('theme', Object.keys(themes)[0])}
           searchable={true}
           required={true}
           disabled={!!getSetting('custom-theme')}

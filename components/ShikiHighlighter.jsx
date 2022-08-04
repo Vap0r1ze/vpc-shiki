@@ -1,4 +1,4 @@
-const color2Rgba = require('../color2Rgba.min.js')
+const color2Rgba = require('../modules/color2Rgba.min.js')
 const { React, hljs, i18n: { Messages } } = require('powercord/webpack')
 const { clipboard } = require('electron')
 const fs = require('fs')

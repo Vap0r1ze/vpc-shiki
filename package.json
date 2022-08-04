@@ -1,0 +1,12 @@
+{
+  "name": "vpc-shiki",
+  "version": "0.0.1",
+  "private": true,
+  "author": "Vap0r1ze",
+  "license": "MIT",
+  "dependencies": {
+    "jsonc-parser": "^3.1.0",
+    "vscode-oniguruma": "1.6.1",
+    "vscode-textmate": "5.2.0"
+  }
+}
