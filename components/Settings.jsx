@@ -23,6 +23,13 @@ module.exports = class Settings extends React.PureComponent {
   }
   debounces = {}
 
+  constructor(props) {
+    super(props)
+
+    this.previewsRef = React.createRef()
+    this.previewsRef.current = []
+  }
+
   getCustomThemeIssue (href) {
     if (!href) return 0
     try {
@@ -84,8 +91,9 @@ module.exports = class Settings extends React.PureComponent {
       })
     }
 
-    const previews = previewsData.map(data => (
+    const previews = previewsData.map((data, i) => (
       <ShikiHighlighter
+        ref={sh => this.previewsRef.current[i] = sh}
         lang={data.lang}
         content={data.content}
         getHighlighter={getHighlighter}
@@ -154,6 +162,7 @@ module.exports = class Settings extends React.PureComponent {
               this.padPromise(loadHighlighter()).then(() => {
                 this.removeLoadingCause(themeCause)
                 refreshCodeblocks()
+                this.previewsRef.current.forEach(sh => sh.lazilyHighlight())
               })
               this.setState({
                 lastEdited: Date.now(),
