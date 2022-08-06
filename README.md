@@ -1,5 +1,5 @@
 # Shiki Codeblocks
-A powercord plugin for rendering codeblocks with shiki, with theming support!
+A [replugged](https://github.com/replugged-org/replugged) plugin for rendering codeblocks with shiki, with theming support!
 
 ### Theming Preview
 
