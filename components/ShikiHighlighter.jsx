@@ -114,14 +114,13 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
       lang,
       content,
       shiki,
-      getLang,
       isPreview,
       useDevIcon,
       bgOpacity,
     } = this.props
 
     const hljsLang = hljs?.getLanguage?.(lang)
-    const shikiLang = getLang(lang)
+    const shikiLang = shiki.resolveLang(lang)
     let langName = shikiLang?.name
 
     const useHLJS = this.shouldUseHLJS()
@@ -213,10 +212,10 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
   }
 
   shouldUseHLJS () {
-    const { lang, getLang, tryHLJS } = this.props
+    const { lang, shiki, tryHLJS } = this.props
 
     const hljsLang = hljs?.getLanguage?.(lang)
-    const shikiLang = getLang(lang)
+    const shikiLang = shiki.resolveLang(lang)
     const langName = shikiLang?.name
 
     switch (tryHLJS) {

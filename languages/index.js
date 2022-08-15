@@ -1,73 +1,69 @@
-const fs = require('fs')
+const fs = require('fs/promises')
 const { resolve } = require('path')
-
-function loadJSON (fileName) {
-  return JSON.parse(fs.readFileSync(resolve(__dirname, fileName)))
-}
 
 module.exports = [
   {
     name: 'ABAP',
     id: 'abap',
     scopeName: 'source.abap',
-    grammar: loadJSON('abap.tmLanguage.json')
+    grammarFile: 'abap.tmLanguage.json'
   },
   {
     name: 'ActionScript',
     id: 'actionscript-3',
     scopeName: 'source.actionscript.3',
-    grammar: loadJSON('actionscript-3.tmLanguage.json'),
+    grammarFile: 'actionscript-3.tmLanguage.json',
     aliases: ['as', 'actionscript']
   },
   {
     name: 'Ada',
     id: 'ada',
     scopeName: 'source.ada',
-    grammar: loadJSON('ada.tmLanguage.json')
+    grammarFile: 'ada.tmLanguage.json'
   },
   {
     name: 'Apex',
     id: 'apex',
     scopeName: 'source.apex',
-    grammar: loadJSON('apex.tmLanguage.json')
+    grammarFile: 'apex.tmLanguage.json'
   },
   {
     name: 'AppleScript',
     id: 'applescript',
     scopeName: 'source.applescript',
-    grammar: loadJSON('applescript.tmLanguage.json')
+    grammarFile: 'applescript.tmLanguage.json'
   },
   {
     name: 'AsciiDoc',
     id: 'asciidoc',
     scopeName: 'text.asciidoc',
-    grammar: loadJSON('asciidoc.tmLanguage.json')
+    grammarFile: 'asciidoc.tmLanguage.json'
   },
   {
     name: 'Assembly x64',
     id: 'asm',
     scopeName: 'source.asm.x86_64',
-    grammar: loadJSON('asm.tmLanguage.json')
+    grammarFile: 'asm.tmLanguage.json'
   },
   {
     name: 'ASP.NET Razor',
     id: 'asp-net-razor',
     devicon: 'dot-net-plain',
     scopeName: 'text.aspnetcorerazor',
-    grammar: loadJSON('asp-net-razor.tmLanguage.json'),
+    grammarFile: 'asp-net-razor.tmLanguage.json',
     aliases: ['razor']
   },
   {
     name: 'AWK',
     id: 'awk',
     scopeName: 'source.awk',
-    grammar: loadJSON('awk.tmLanguage.json')
+    grammarFile: 'awk.tmLanguage.json'
   },
   {
     name: 'Batchfile',
     id: 'bat',
     scopeName: 'source.batchfile',
-    grammar: loadJSON('bat.tmLanguage.json'),
+    grammarFile: 'bat.tmLanguage.json',
     aliases: ['batch']
   },
   {
@@ -75,55 +71,55 @@ module.exports = [
     id: 'c',
     devicon: 'c-plain',
     scopeName: 'source.c',
-    grammar: loadJSON('c.tmLanguage.json')
+    grammarFile: 'c.tmLanguage.json'
   },
   {
     name: 'Clojure',
     id: 'clojure',
     devicon: 'clojure-line',
     scopeName: 'source.clojure',
-    grammar: loadJSON('clojure.tmLanguage.json'),
+    grammarFile: 'clojure.tmLanguage.json',
     aliases: ['clj']
   },
   {
     name: 'Cobol',
     id: 'cobol',
     scopeName: 'source.cobol',
-    grammar: loadJSON('cobol.tmLanguage.json')
+    grammarFile: 'cobol.tmLanguage.json'
   },
   {
     name: 'CoffeeScript',
     id: 'coffee',
     devicon: 'coffeescript-original',
     scopeName: 'source.coffee',
-    grammar: loadJSON('coffee.tmLanguage.json')
+    grammarFile: 'coffee.tmLanguage.json'
   },
   {
     name: 'C++ Embedded Macro',
     id: 'cpp.embedded.macro',
     devicon: 'cplusplus-plain',
     scopeName: 'source.cpp.embedded.macro',
-    grammar: loadJSON('cpp.embedded.macro.tmLanguage.json')
+    grammarFile: 'cpp.embedded.macro.tmLanguage.json'
   },
   {
     name: 'C++',
     id: 'cpp',
     devicon: 'cplusplus-plain',
     scopeName: 'source.cpp',
-    grammar: loadJSON('cpp.tmLanguage.json')
+    grammarFile: 'cpp.tmLanguage.json'
   },
   {
     name: 'Crystal',
     id: 'crystal',
     scopeName: 'source.crystal',
-    grammar: loadJSON('crystal.tmLanguage.json')
+    grammarFile: 'crystal.tmLanguage.json'
   },
   {
     name: 'C#',
     id: 'csharp',
     devicon: 'csharp-plain',
     scopeName: 'source.cs',
-    grammar: loadJSON('csharp.tmLanguage.json'),
+    grammarFile: 'csharp.tmLanguage.json',
     aliases: ['c#', 'cs']
   },
   {
@@ -131,85 +127,85 @@ module.exports = [
     id: 'css',
     devicon: 'css3-plain',
     scopeName: 'source.css',
-    grammar: loadJSON('css.tmLanguage.json')
+    grammarFile: 'css.tmLanguage.json'
   },
   {
     name: 'D',
     id: 'd',
     scopeName: 'source.d',
-    grammar: loadJSON('d.tmLanguage.json')
+    grammarFile: 'd.tmLanguage.json'
   },
   {
     name: 'Dart',
     id: 'dart',
     scopeName: 'source.dart',
-    grammar: loadJSON('dart.tmLanguage.json')
+    grammarFile: 'dart.tmLanguage.json'
   },
   {
     name: 'Diff',
     id: 'diff',
     scopeName: 'source.diff',
-    grammar: loadJSON('diff.tmLanguage.json')
+    grammarFile: 'diff.tmLanguage.json'
   },
   {
     name: 'Dockerfile',
     id: 'dockerfile',
     devicon: 'docker-plain',
     scopeName: 'source.dockerfile',
-    grammar: loadJSON('dockerfile.tmLanguage.json')
+    grammarFile: 'dockerfile.tmLanguage.json'
   },
   {
     name: 'Elixir',
     id: 'elixir',
     devicon: 'elixir-plain',
     scopeName: 'source.elixir',
-    grammar: loadJSON('elixir.tmLanguage.json')
+    grammarFile: 'elixir.tmLanguage.json'
   },
   {
     name: 'Elm',
     id: 'elm',
     devicon: 'elm-plain',
     scopeName: 'source.elm',
-    grammar: loadJSON('elm.tmLanguage.json')
+    grammarFile: 'elm.tmLanguage.json'
   },
   {
     name: 'Erlang',
     id: 'erlang',
     devicon: 'erlang-plain',
     scopeName: 'source.erlang',
-    grammar: loadJSON('erlang.tmLanguage.json')
+    grammarFile: 'erlang.tmLanguage.json'
   },
   {
     name: 'F#',
     id: 'fsharp',
     devicon: 'fsharp-plain',
     scopeName: 'source.fsharp',
-    grammar: loadJSON('fsharp.tmLanguage.json'),
+    grammarFile: 'fsharp.tmLanguage.json',
     aliases: ['f#']
   },
   {
     name: 'Git Commit',
     id: 'git-commit',
     scopeName: 'text.git-commit',
-    grammar: loadJSON('git-commit.tmLanguage.json')
+    grammarFile: 'git-commit.tmLanguage.json'
   },
   {
     name: 'Git Rebase',
     id: 'git-rebase',
     scopeName: 'text.git-rebase',
-    grammar: loadJSON('git-rebase.tmLanguage.json')
+    grammarFile: 'git-rebase.tmLanguage.json'
   },
   {
     name: 'GNU Plot',
     id: 'gnuplot',
     scopeName: 'source.gnuplot',
-    grammar: loadJSON('gnuplot.tmLanguage.json')
+    grammarFile: 'gnuplot.tmLanguage.json'
   },
   {
     name: 'GDScript',
     id: 'gdscript',
     scopeName: 'source.gdscript',
-    grammar: loadJSON('GDScript.tmLanguage.json'),
+    grammarFile: 'GDScript.tmLanguage.json',
     aliases: ['godot', 'gds', 'gd']
   },
   {
@@ -217,39 +213,39 @@ module.exports = [
     id: 'go',
     devicon: 'go-plain',
     scopeName: 'source.go',
-    grammar: loadJSON('go.tmLanguage.json')
+    grammarFile: 'go.tmLanguage.json'
   },
   {
     name: 'GraphQL',
     id: 'graphql',
     scopeName: 'source.graphql',
-    grammar: loadJSON('graphql.tmLanguage.json')
+    grammarFile: 'graphql.tmLanguage.json'
   },
   {
     name: 'Groovy',
     id: 'groovy',
     icon: 'groovy-plain',
     scopeName: 'source.groovy',
-    grammar: loadJSON('groovy.tmLanguage.json')
+    grammarFile: 'groovy.tmLanguage.json'
   },
   {
     name: 'Hack',
     id: 'hack',
     scopeName: 'source.hack',
-    grammar: loadJSON('hack.tmLanguage.json')
+    grammarFile: 'hack.tmLanguage.json'
   },
   {
     name: 'Haml',
     id: 'haml',
     scopeName: 'text.haml',
-    grammar: loadJSON('haml.tmLanguage.json')
+    grammarFile: 'haml.tmLanguage.json'
   },
   {
     name: 'Handlebars',
     id: 'handlebars',
     devicon: 'handlebars-plain',
     scopeName: 'text.html.handlebars',
-    grammar: loadJSON('handlebars.tmLanguage.json'),
+    grammarFile: 'handlebars.tmLanguage.json',
     aliases: ['hbs']
   },
   {
@@ -257,26 +253,26 @@ module.exports = [
     id: 'haskell',
     devicon: 'haskell-plain',
     scopeName: 'source.haskell',
-    grammar: loadJSON('haskell.tmLanguage.json'),
+    grammarFile: 'haskell.tmLanguage.json',
     aliases: ['hs']
   },
   {
     name: 'HCL',
     id: 'hcl',
     scopeName: 'source.hcl',
-    grammar: loadJSON('hcl.tmLanguage.json')
+    grammarFile: 'hcl.tmLanguage.json'
   },
   {
     name: 'High-Level Shading Language',
     id: 'hlsl',
     scopeName: 'source.hlsl',
-    grammar: loadJSON('hlsl.tmLanguage.json')
+    grammarFile: 'hlsl.tmLanguage.json'
   },
   {
     name: 'eRuby',
     id: 'html-ruby-erb',
     scopeName: 'text.html.erb',
-    grammar: loadJSON('html-ruby-erb.tmLanguage.json'),
+    grammarFile: 'html-ruby-erb.tmLanguage.json',
     aliases: ['erb']
   },
   {
@@ -284,86 +280,86 @@ module.exports = [
     id: 'html',
     icon: 'html5-plain',
     scopeName: 'text.html.basic',
-    grammar: loadJSON('html.tmLanguage.json')
+    grammarFile: 'html.tmLanguage.json'
   },
   {
     name: 'HTTP',
     id: 'http',
     scopeName: 'source.http',
-    grammar: loadJSON('http.tmLanguage.json'),
+    grammarFile: 'http.tmLanguage.json',
     aliases: ['rest']
   },
   {
     name: 'INI',
     id: 'ini',
     scopeName: 'source.ini',
-    grammar: loadJSON('ini.tmLanguage.json')
+    grammarFile: 'ini.tmLanguage.json'
   },
   {
     name: 'Java',
     id: 'java',
     devicon: 'java-plain',
     scopeName: 'source.java',
-    grammar: loadJSON('java.tmLanguage.json')
+    grammarFile: 'java.tmLanguage.json'
   },
   {
     name: 'JavaScript',
     id: 'javascript',
     devicon: 'javascript-plain',
     scopeName: 'source.js',
-    grammar: loadJSON('javascript.tmLanguage.json'),
+    grammarFile: 'javascript.tmLanguage.json',
     aliases: ['js', 'esm', 'cjs']
   },
   {
     name: 'Jinja Template',
     id: 'jinja-html',
     scopeName: 'text.html.jinja',
-    grammar: loadJSON('jinja-html.tmLanguage.json'),
+    grammarFile: 'jinja-html.tmLanguage.json',
     aliases: ['jhtml']
   },
   {
     name: 'Jinja',
     id: 'jinja',
     scopeName: 'source.jinja',
-    grammar: loadJSON('jinja.tmLanguage.json'),
+    grammarFile: 'jinja.tmLanguage.json',
     aliases: ['j2']
   },
   {
     name: 'JSON',
     id: 'json',
     scopeName: 'source.json',
-    grammar: loadJSON('json.tmLanguage.json')
+    grammarFile: 'json.tmLanguage.json'
   },
   {
     name: 'JSON5',
     id: 'json5',
     scopeName: 'source.json5',
-    grammar: loadJSON('json5.tmLanguage.json')
+    grammarFile: 'json5.tmLanguage.json'
   },
   {
     name: 'JSON-C',
     id: 'jsonc',
     scopeName: 'source.json.comments',
-    grammar: loadJSON('jsonc.tmLanguage.json')
+    grammarFile: 'jsonc.tmLanguage.json'
   },
   {
     name: 'Jsonnet',
     id: 'jsonnet',
     scopeName: 'source.jsonnet',
-    grammar: loadJSON('jsonnet.tmLanguage.json')
+    grammarFile: 'jsonnet.tmLanguage.json'
   },
   {
     name: 'JSX',
     id: 'jsx',
     devicon: 'react-original',
     scopeName: 'source.js',
-    grammar: loadJSON('javascript.tmLanguage.json')
+    grammarFile: 'javascript.tmLanguage.json'
   },
   {
     name: 'Julia',
     id: 'julia',
     scopeName: 'source.julia',
-    grammar: loadJSON('julia.tmLanguage.json'),
+    grammarFile: 'julia.tmLanguage.json',
     aliases: ['jl']
   },
   {
@@ -371,14 +367,14 @@ module.exports = [
     id: 'kotlin',
     devicon: 'kotlin-plain',
     scopeName: 'source.kotlin',
-    grammar: loadJSON('kotlin.tmLanguage.json'),
+    grammarFile: 'kotlin.tmLanguage.json',
     aliases: ['kt', 'kts']
   },
   {
     name: 'LaTeX',
     id: 'latex',
     scopeName: 'text.tex.latex',
-    grammar: loadJSON('latex.tmLanguage.json'),
+    grammarFile: 'latex.tmLanguage.json',
     aliases: ['tex']
   },
   {
@@ -386,37 +382,37 @@ module.exports = [
     id: 'less',
     devicon: 'less-plain-wordmark',
     scopeName: 'source.css.less',
-    grammar: loadJSON('less.tmLanguage.json')
+    grammarFile: 'less.tmLanguage.json'
   },
   {
     name: 'Lisp',
     id: 'lisp',
     scopeName: 'source.lisp',
-    grammar: loadJSON('lisp.tmLanguage.json')
+    grammarFile: 'lisp.tmLanguage.json'
   },
   {
     name: 'Logo',
     id: 'logo',
     scopeName: 'source.logo',
-    grammar: loadJSON('logo.tmLanguage.json')
+    grammarFile: 'logo.tmLanguage.json'
   },
   {
     name: 'Lua',
     id: 'lua',
     scopeName: 'source.lua',
-    grammar: loadJSON('lua.tmLanguage.json')
+    grammarFile: 'lua.tmLanguage.json'
   },
   {
     name: 'Makefile',
     id: 'makefile',
     scopeName: 'source.makefile',
-    grammar: loadJSON('makefile.tmLanguage.json')
+    grammarFile: 'makefile.tmLanguage.json'
   },
   {
     name: 'Markdown',
     id: 'markdown',
     scopeName: 'text.html.markdown',
-    grammar: loadJSON('markdown.tmLanguage.json'),
+    grammarFile: 'markdown.tmLanguage.json',
     aliases: ['md']
   },
   {
@@ -424,51 +420,51 @@ module.exports = [
     id: 'matlab',
     devicon: 'matlab-plain',
     scopeName: 'source.matlab',
-    grammar: loadJSON('matlab.tmLanguage.json')
+    grammarFile: 'matlab.tmLanguage.json'
   },
   {
     name: 'MC Function',
     id: 'mcfunction',
     scopeName: 'source.mcfunction',
-    grammar: loadJSON('mcfunction.tmLanguage.json')
+    grammarFile: 'mcfunction.tmLanguage.json'
   },
   {
     name: 'Multidimensional Expression',
     id: 'mdx',
     scopeName: 'text.html.markdown.jsx',
-    grammar: loadJSON('mdx.tmLanguage.json')
+    grammarFile: 'mdx.tmLanguage.json'
   },
   {
     name: 'MoonScript',
     id: 'moonscript',
     scopeName: 'source.moonscript',
-    grammar: loadJSON('moonscript.tmLanguage.json'),
+    grammarFile: 'moonscript.tmLanguage.json',
     aliases: ['moon']
   },
   {
     name: 'Nim',
     id: 'nim',
     scopeName: 'source.nim',
-    grammar: loadJSON('nim.tmLanguage.json')
+    grammarFile: 'nim.tmLanguage.json'
   },
   {
     name: 'Nimble',
     id: 'nimble',
     scopeName: 'source.nimble',
-    grammar: loadJSON('nimble.tmLanguage.json')
+    grammarFile: 'nimble.tmLanguage.json'
   },
   {
     name: 'Nix',
     id: 'nix',
     scopeName: 'source.nix',
-    grammar: loadJSON('nix.tmLanguage.json')
+    grammarFile: 'nix.tmLanguage.json'
   },
   {
     name: 'Objective C',
     id: 'objective-c',
     devicon: 'objectivec-plain',
     scopeName: 'source.objcpp',
-    grammar: loadJSON('objective-c.tmLanguage.json'),
+    grammarFile: 'objective-c.tmLanguage.json',
     aliases: ['objc']
   },
   {
@@ -476,32 +472,32 @@ module.exports = [
     id: 'ocaml',
     devicon: 'ocaml-plain',
     scopeName: 'source.ocaml',
-    grammar: loadJSON('ocaml.tmLanguage.json')
+    grammarFile: 'ocaml.tmLanguage.json'
   },
   {
     name: 'Pascal',
     id: 'pascal',
     scopeName: 'source.pascal',
-    grammar: loadJSON('pascal.tmLanguage.json'),
+    grammarFile: 'pascal.tmLanguage.json',
     aliases: ['pas']
   },
   {
     name: 'PEG.js',
     id: 'pegjs',
     scopeName: 'source.pegjs',
-    grammar: loadJSON('pegjs.tmLanguage.json')
+    grammarFile: 'pegjs.tmLanguage.json'
   },
   {
     name: 'Perl',
     id: 'perl',
     scopeName: 'source.perl',
-    grammar: loadJSON('perl.tmLanguage.json')
+    grammarFile: 'perl.tmLanguage.json'
   },
   {
     name: 'Raku',
     id: 'perl6',
     scopeName: 'source.perl.6',
-    grammar: loadJSON('perl6.tmLanguage.json'),
+    grammarFile: 'perl6.tmLanguage.json',
     aliases: ['raku', 'p6']
   },
   {
@@ -509,7 +505,7 @@ module.exports = [
     id: 'php-html',
     devicon: 'php-plain',
     scopeName: 'text.html.php',
-    grammar: loadJSON('php-html.tmLanguage.json'),
+    grammarFile: 'php-html.tmLanguage.json',
     aliases: ['phtml']
   },
   {
@@ -517,57 +513,57 @@ module.exports = [
     id: 'php',
     devicon: 'php-plain',
     scopeName: 'source.php',
-    grammar: loadJSON('php.tmLanguage.json')
+    grammarFile: 'php.tmLanguage.json'
   },
   {
     name: 'PL/SQL',
     id: 'pls',
     scopeName: 'source.plsql.oracle',
-    grammar: loadJSON('pls.tmLanguage.json')
+    grammarFile: 'pls.tmLanguage.json'
   },
   {
     name: 'PostCSS',
     id: 'postcss',
     scopeName: 'source.css.postcss',
-    grammar: loadJSON('postcss.tmLanguage.json')
+    grammarFile: 'postcss.tmLanguage.json'
   },
   {
     name: 'PowerShell',
     id: 'powershell',
     scopeName: 'source.powershell',
-    grammar: loadJSON('powershell.tmLanguage.json'),
+    grammarFile: 'powershell.tmLanguage.json',
     aliases: ['ps', 'ps1']
   },
   {
     name: 'Prolog',
     id: 'prolog',
     scopeName: 'source.prolog',
-    grammar: loadJSON('prolog.tmLanguage.json')
+    grammarFile: 'prolog.tmLanguage.json'
   },
   {
     name: 'Protocol Buffer 3',
     id: 'proto',
     scopeName: 'source.proto',
-    grammar: loadJSON('proto3.tmLanguage.json')
+    grammarFile: 'proto3.tmLanguage.json'
   },
   {
     name: 'Pug',
     id: 'pug',
     scopeName: 'text.pug',
-    grammar: loadJSON('pug.tmLanguage.json'),
+    grammarFile: 'pug.tmLanguage.json',
     aliases: ['jade']
   },
   {
     name: 'Puppet',
     id: 'puppet',
     scopeName: 'source.puppet',
-    grammar: loadJSON('puppet.tmLanguage.json')
+    grammarFile: 'puppet.tmLanguage.json'
   },
   {
     name: 'PureScript',
     id: 'purescript',
     scopeName: 'source.purescript',
-    grammar: loadJSON('purescript.tmLanguage.json'),
+    grammarFile: 'purescript.tmLanguage.json',
     aliases: ['purs']
   },
   {
@@ -575,7 +571,7 @@ module.exports = [
     id: 'python',
     devicon: 'python-plain',
     scopeName: 'source.python',
-    grammar: loadJSON('python.tmLanguage.json'),
+    grammarFile: 'python.tmLanguage.json',
     aliases: ['py']
   },
   {
@@ -583,14 +579,14 @@ module.exports = [
     id: 'r',
     devicon: 'r-original',
     scopeName: 'source.r',
-    grammar: loadJSON('r.tmLanguage.json')
+    grammarFile: 'r.tmLanguage.json'
   },
   {
     name: 'ASP.NET Razor',
     id: 'razor',
     devicon: 'dot-net-plain',
     scopeName: 'text.html.cshtml',
-    grammar: loadJSON('razor.tmLanguage.json'),
+    grammarFile: 'razor.tmLanguage.json',
     aliases: ['cshtml']
   },
   {
@@ -598,7 +594,7 @@ module.exports = [
     id: 'ruby',
     devicon: 'ruby-plain',
     scopeName: 'source.ruby',
-    grammar: loadJSON('ruby.tmLanguage.json'),
+    grammarFile: 'ruby.tmLanguage.json',
     aliases: ['rb']
   },
   {
@@ -606,47 +602,47 @@ module.exports = [
     id: 'rust',
     devicon: 'rust-plain',
     scopeName: 'source.rust',
-    grammar: loadJSON('rust.tmLanguage.json'),
+    grammarFile: 'rust.tmLanguage.json',
     aliases: ['rs']
   },
   {
     name: 'SAS',
     id: 'sas',
     scopeName: 'source.sas',
-    grammar: loadJSON('sas.tmLanguage.json')
+    grammarFile: 'sas.tmLanguage.json'
   },
   {
     name: 'Sass',
     id: 'sass',
     devicon: 'sass-original',
     scopeName: 'source.sass',
-    grammar: loadJSON('sass.tmLanguage.json')
+    grammarFile: 'sass.tmLanguage.json'
   },
   {
     name: 'Scala',
     id: 'scala',
     devicon: 'scala-plain',
     scopeName: 'source.scala',
-    grammar: loadJSON('scala.tmLanguage.json')
+    grammarFile: 'scala.tmLanguage.json'
   },
   {
     name: 'Scheme',
     id: 'scheme',
     scopeName: 'source.scheme',
-    grammar: loadJSON('scheme.tmLanguage.json')
+    grammarFile: 'scheme.tmLanguage.json'
   },
   {
     name: 'SCSS',
     id: 'scss',
     devicon: 'sass-original',
     scopeName: 'source.css.scss',
-    grammar: loadJSON('scss.tmLanguage.json')
+    grammarFile: 'scss.tmLanguage.json'
   },
   {
     name: 'ShaderLab',
     id: 'shaderlab',
     scopeName: 'source.shaderlab',
-    grammar: loadJSON('shaderlab.tmLanguage.json'),
+    grammarFile: 'shaderlab.tmLanguage.json',
     aliases: ['shader']
   },
   {
@@ -654,39 +650,39 @@ module.exports = [
     id: 'shellscript',
     devicon: 'bash-plain',
     scopeName: 'source.shell',
-    grammar: loadJSON('shellscript.tmLanguage.json'),
+    grammarFile: 'shellscript.tmLanguage.json',
     aliases: ['shell', 'bash', 'sh', 'zsh']
   },
   {
     name: 'Smalltalk',
     id: 'smalltalk',
     scopeName: 'source.smalltalk',
-    grammar: loadJSON('smalltalk.tmLanguage.json')
+    grammarFile: 'smalltalk.tmLanguage.json'
   },
   {
     name: 'SourcePawn',
     id: 'sp',
     scopeName: 'source.sourcepawn',
-    grammar: loadJSON('sourcepawn.tmLanguage.json')
+    grammarFile: 'sourcepawn.tmLanguage.json'
   },
   {
     name: 'SQL',
     id: 'sql',
     scopeName: 'source.sql',
-    grammar: loadJSON('sql.tmLanguage.json')
+    grammarFile: 'sql.tmLanguage.json'
   },
   {
     name: 'SSH Config',
     id: 'ssh-config',
     scopeName: 'source.ssh-config',
-    grammar: loadJSON('ssh-config.tmLanguage.json')
+    grammarFile: 'ssh-config.tmLanguage.json'
   },
   {
     name: 'Stylus',
     id: 'stylus',
     devicon: 'stylus-original',
     scopeName: 'source.stylus',
-    grammar: loadJSON('stylus.tmLanguage.json'),
+    grammarFile: 'stylus.tmLanguage.json',
     aliases: ['styl']
   },
   {
@@ -694,54 +690,54 @@ module.exports = [
     id: 'swift',
     devicon: 'swift-plain',
     scopeName: 'source.swift',
-    grammar: loadJSON('swift.tmLanguage.json')
+    grammarFile: 'swift.tmLanguage.json'
   },
   {
     name: 'Tcl',
     id: 'tcl',
     scopeName: 'source.tcl',
-    grammar: loadJSON('tcl.tmLanguage.json')
+    grammarFile: 'tcl.tmLanguage.json'
   },
   {
     name: 'TOML',
     id: 'toml',
     scopeName: 'source.toml',
-    grammar: loadJSON('toml.tmLanguage.json')
+    grammarFile: 'toml.tmLanguage.json'
   },
   {
     name: 'TypeScript Doc',
     id: 'ts-doc',
     devicon: 'typescript-plain',
     scopeName: 'documentation.injection.ts',
-    grammar: loadJSON('ts.tmLanguage.json')
+    grammarFile: 'ts.tmLanguage.json'
   },
   {
     name: 'TSX',
     id: 'tsx',
     devicon: 'react-original',
     scopeName: 'source.tsx',
-    grammar: loadJSON('tsx.tmLanguage.json')
+    grammarFile: 'tsx.tmLanguage.json'
   },
   {
     name: 'TypeScript',
     id: 'typescript',
     devicon: 'typescript-plain',
     scopeName: 'source.ts',
-    grammar: loadJSON('typescript.tmLanguage.json'),
+    grammarFile: 'typescript.tmLanguage.json',
     aliases: ['ts']
   },
   {
     name: 'VHDL',
     id: 'vhdl',
     scopeName: 'source.vhdl',
-    grammar: loadJSON('vhdl.tmLanguage.json')
+    grammarFile: 'vhdl.tmLanguage.json'
   },
   {
     name: 'Visual Basic .NET',
     id: 'vb',
     devicon: 'dot-net-plain',
     scopeName: 'source.asp.vb.net',
-    grammar: loadJSON('vb.tmLanguage.json'),
+    grammarFile: 'vb.tmLanguage.json',
     aliases: ['cmd']
   },
   {
@@ -749,7 +745,7 @@ module.exports = [
     id: 'viml',
     devicon: 'vim-plain',
     scopeName: 'source.viml',
-    grammar: loadJSON('viml.tmLanguage.json'),
+    grammarFile: 'viml.tmLanguage.json',
     aliases: ['vim']
   },
   {
@@ -757,46 +753,54 @@ module.exports = [
     id: 'vue-html',
     devicon: 'vuejs-plain',
     scopeName: 'text.html.vue-html',
-    grammar: loadJSON('vue-html.tmLanguage.json')
+    grammarFile: 'vue-html.tmLanguage.json'
   },
   {
     name: 'Vue',
     id: 'vue',
     devicon: 'vuejs-plain',
     scopeName: 'source.vue',
-    grammar: loadJSON('vue.tmLanguage.json')
+    grammarFile: 'vue.tmLanguage.json'
   },
   {
     name: 'WebAssembly',
     id: 'wasm',
     scopeName: 'source.wat',
-    grammar: loadJSON('wasm.tmLanguage.json'),
+    grammarFile: 'wasm.tmLanguage.json',
     aliases: ['wat']
   },
   {
     name: 'XML',
     id: 'xml',
     scopeName: 'text.xml',
-    grammar: loadJSON('xml.tmLanguage.json')
+    grammarFile: 'xml.tmLanguage.json'
   },
   {
     name: 'XSL',
     id: 'xsl',
     scopeName: 'text.xml.xsl',
-    grammar: loadJSON('xsl.tmLanguage.json')
+    grammarFile: 'xsl.tmLanguage.json'
   },
   {
     name: 'YAML',
     id: 'yaml',
     scopeName: 'source.yaml',
-    grammar: loadJSON('yaml.tmLanguage.json'),
+    grammarFile: 'yaml.tmLanguage.json',
     aliases: ['yml']
   },
   {
     name: 'Wenyan',
     id: '文言',
     scopeName: 'source.wenyan',
-    grammar: loadJSON('文言.tmLanguage.json'),
+    grammarFile: '文言.tmLanguage.json',
     aliases: ['wenyan']
   }
 ]
+
+module.exports.loadGrammar = id => {
+  const lang = module.exports.find(l => l.id === id)
+  if (!lang) throw new Error(`Could not find load grammar of invalid lang "${id}"`)
+  if (lang.grammar) return Promise.resolve(lang.grammar)
+  return fs.readFile(resolve(__dirname, lang.grammarFile), 'utf-8')
+    .then(json => lang.grammar = JSON.parse(json))
+}

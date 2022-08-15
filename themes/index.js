@@ -1,121 +1,125 @@
-const fs = require('fs')
+const fs = require('fs/promises')
 const { resolve } = require('path')
-
-function loadJSON (fileName) {
-  return JSON.parse(fs.readFileSync(resolve(__dirname, fileName)))
-}
 
 module.exports = {
   'dark-plus': {
     name: 'Dark Plus',
-    data: loadJSON('dark-plus.json')
+    dataFile: 'dark-plus.json'
   },
   'dracula-soft': {
     name: 'Dracula Soft',
-    data: loadJSON('dracula-soft.json')
+    dataFile: 'dracula-soft.json'
   },
   'dracula': {
     name: 'Dracula',
-    data: loadJSON('dracula.json')
+    dataFile: 'dracula.json'
   },
   'github-dark-dimmed': {
     name: 'Github Dark Dimmed',
-    data: loadJSON('github-dark-dimmed.json')
+    dataFile: 'github-dark-dimmed.json'
   },
   'github-dark': {
     name: 'Github Dark',
-    data: loadJSON('github-dark.json')
+    dataFile: 'github-dark.json'
   },
   'github-light': {
     name: 'Github Light',
-    data: loadJSON('github-light.json')
+    dataFile: 'github-light.json'
   },
   'light-plus': {
     name: 'Light Plus',
-    data: loadJSON('light-plus.json')
+    dataFile: 'light-plus.json'
   },
   'material-darker': {
     name: 'Material Darker',
-    data: loadJSON('material-darker.json')
+    dataFile: 'material-darker.json'
   },
   'material-default': {
     name: 'Material Default',
-    data: loadJSON('material-default.json')
+    dataFile: 'material-default.json'
   },
   'material-lighter': {
     name: 'Material Lighter',
-    data: loadJSON('material-lighter.json')
+    dataFile: 'material-lighter.json'
   },
   'material-ocean': {
     name: 'Material Ocean',
-    data: loadJSON('material-ocean.json')
+    dataFile: 'material-ocean.json'
   },
   'material-palenight': {
     name: 'Material Palenight',
-    data: loadJSON('material-palenight.json')
+    dataFile: 'material-palenight.json'
   },
   'min-dark': {
     name: 'Min Dark',
-    data: loadJSON('min-dark.json')
+    dataFile: 'min-dark.json'
   },
   'min-light': {
     name: 'Min Light',
-    data: loadJSON('min-light.json')
+    dataFile: 'min-light.json'
   },
   'monokai': {
     name: 'Monokai',
-    data: loadJSON('monokai.json')
+    dataFile: 'monokai.json'
   },
   'nord': {
     name: 'Nord',
-    data: loadJSON('nord.json')
+    dataFile: 'nord.json'
   },
   'one-dark-pro': {
     name: 'One Dark Pro',
-    data: loadJSON('one-dark-pro.json')
+    dataFile: 'one-dark-pro.json'
   },
   'poimandres': {
     name: 'Poimandres',
-    data: loadJSON('poimandres.json')
+    dataFile: 'poimandres.json'
   },
   'rose-pine-dawn': {
     name: 'Rose Pine Dawn',
-    data: loadJSON('rose-pine-dawn.json')
+    dataFile: 'rose-pine-dawn.json'
   },
   'rose-pine-moon': {
     name: 'Rose Pine Moon',
-    data: loadJSON('rose-pine-moon.json')
+    dataFile: 'rose-pine-moon.json'
   },
   'rose-pine': {
     name: 'Rose Pine',
-    data: loadJSON('rose-pine.json')
+    dataFile: 'rose-pine.json'
   },
   'slack-dark': {
     name: 'Slack Dark',
-    data: loadJSON('slack-dark.json')
+    dataFile: 'slack-dark.json'
   },
   'slack-ochin': {
     name: 'Slack Ochin',
-    data: loadJSON('slack-ochin.json')
+    dataFile: 'slack-ochin.json'
   },
   'solarized-dark': {
     name: 'Solarized Dark',
-    data: loadJSON('solarized-dark.json')
+    dataFile: 'solarized-dark.json'
   },
   'solarized-light': {
     name: 'Solarized Light',
-    data: loadJSON('solarized-light.json')
+    dataFile: 'solarized-light.json'
   },
   'vitesse-dark': {
     name: 'Vitesse Dark',
-    data: loadJSON('vitesse-dark.json')
+    dataFile: 'vitesse-dark.json'
   },
   'vitesse-light': {
     name: 'Vitesse Light',
-    data: loadJSON('vitesse-light.json')
+    dataFile: 'vitesse-light.json'
   },
   'css-variables': {
     name: 'CSS Variables',
-    data: loadJSON('css-variables.json')
+    dataFile: 'css-variables.json'
   },
+}
+
+module.exports.loadData = id => {
+  if (module.exports[id].data) return Promise.resolve(module.exports[id].data)
+  const theme = module.exports[id]
+  if (!theme) throw new Error(`Could not find load data of invalid theme "${id}"`)
+  return fs.readFile(resolve(__dirname, theme.dataFile), 'utf-8')
+    .then(json => module.exports[id].data = JSON.parse(json))
 }

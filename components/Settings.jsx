@@ -1,5 +1,5 @@
 const { React } = require('powercord/webpack')
-const { SelectInput, TextInput, SwitchItem, RadioGroup, SliderInput } = require('powercord/components/settings')
+const { SelectInput, TextInput, RadioGroup, SliderInput } = require('powercord/components/settings')
 const { Spinner } = require('powercord/components')
 const { sleep } = require('powercord/util')
 const ShikiHighlighter = require('./ShikiHighlighter')
@@ -77,16 +77,15 @@ module.exports = class Settings extends React.PureComponent {
     const {
       getSetting,
       updateSetting,
-      loadHighlighter,
+      setTheme,
       shiki,
-      getLang,
       refreshCodeblocks
     } = this.props
 
     if (!this.state.themeLoadingCauses.length && !shiki.currentTheme) {
       const highlighterCause = Date.now()
       this.addLoadingCause(highlighterCause)
-      loadHighlighter().then(() => {
+      setTheme().then(() => {
         this.removeLoadingCause(highlighterCause)
       })
     }
@@ -97,7 +96,6 @@ module.exports = class Settings extends React.PureComponent {
         lang={data.lang}
         content={data.content}
         shiki={shiki}
-        getLang={getLang}
         isPreview={true}
         tryHLJS={getSetting('try-hljs', 'never')}
         useDevIcon={getSetting('use-devicon', 'false')}
@@ -135,7 +133,7 @@ module.exports = class Settings extends React.PureComponent {
             updateSetting('theme', value)
             const themeCause = Date.now()
             this.addLoadingCause(themeCause)
-            this.padPromise(loadHighlighter()).then(() => {
+            this.padPromise(setTheme()).then(() => {
               this.removeLoadingCause(themeCause)
               refreshCodeblocks()
             })
@@ -159,7 +157,7 @@ module.exports = class Settings extends React.PureComponent {
               updateSetting('custom-theme', value)
               const themeCause = Date.now()
               this.addLoadingCause(themeCause)
-              this.padPromise(loadHighlighter()).then(() => {
+              this.padPromise(setTheme()).then(() => {
                 this.removeLoadingCause(themeCause)
                 refreshCodeblocks()
                 this.previewsRef.current.forEach(sh => sh.lazilyHighlight())

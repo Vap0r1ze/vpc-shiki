@@ -9,16 +9,20 @@ const handlers = {
   setWasm({ wasm }) {
     shiki.setWasm(wasm)
   },
-  async loadTheme({ theme }) {
-    const themeData = await shiki.loadTheme(theme)
-    const themeBuffer = this.data.themeBuffer = serializeJson(themeData)
-    this.transferables = [ themeBuffer.buffer ]
-  },
   async setHighlighter({ theme, langs }) {
     highlighter = await shiki.getHighlighter({ theme, langs })
   },
-  async codeToThemedTokens({ code, lang }) {
-    this.data = await highlighter.codeToThemedTokens(code, lang)
+  async loadTheme({ theme }) {
+    await highlighter.loadTheme(theme)
+  },
+  async getTheme({ theme }) {
+    this.data.themeData = JSON.stringify(highlighter.getTheme(theme))
+  },
+  async loadLanguage({ lang }) {
+    await highlighter.loadLanguage(lang)
+  },
+  async codeToThemedTokens({ code, lang, theme }) {
+    this.data = await highlighter.codeToThemedTokens(code, lang, theme)
   },
 }
 
@@ -44,18 +48,4 @@ onmessage = ({ data: { cmd, args = {}, nonce } }) => {
     if (transferables) delete res.transferables
     postMessage(res, transferables)
   })
-}
-
-function serializeJson(json) {
-  const str = JSON.stringify(json)
-  const uintArray = []
-  const len = str.length
-
-  let i = -1
-
-  while (++i < len) {
-    uintArray[i] = str.charCodeAt(i)
-  }
-
-  return new Uint8Array(uintArray)
 }
