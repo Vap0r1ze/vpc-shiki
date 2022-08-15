@@ -26,35 +26,60 @@ module.exports = Object.create({
       this.callbacks[res.nonce](res)
       delete this.callbacks[res.nonce]
     })
+
+    await this.loadOniguruma()
   },
 
+  _deserializeJson(buffer) {
+    const str = String.fromCharCode.apply(null, buffer)
+    return JSON.parse(str)
+  },
   _setCallback(nonce, cb, timeoutCb) {
     this.callbacks[nonce] = cb
     setTimeout(() => {
       if (!this.callbacks[nonce]) return
       delete this.callbacks[nonce]
       timeoutCb()
-    }, this.TIMEOUT_MS)
+    }, this.timeoutMs)
   },
-  _promisifyCommand({ cmd, args = {}, nonce }) {
+  _promisifyCommand({ cmd, args = {}, nonce }, transferables) {
     return new Promise((resolve, reject) => {
       this._setCallback(nonce, res => {
         if (res.evt === 'ERROR')
           return reject(new Error(`[ShikiWorker: ${res.data.type}] ${res.data.message}`))
         resolve(res)
       }, () => {
-        reject(new Error('Shiki Worker command timed out'))
+        reject(new Error(`[ShikiWorker: RPCError] "${cmd}" command timed out`))
       })
 
-      this.worker.postMessage({ cmd, args, nonce })
+      this.worker.postMessage({ cmd, args, nonce }, transferables)
     })
   },
-  runCommand(cmd, args) {
+  runCommand(cmd, args, transferables) {
     const nonce = Math.random().toString(16).slice(2)
-    return this._promisifyCommand({ cmd, args, nonce })
+    return this._promisifyCommand({ cmd, args, nonce }, transferables)
+  },
+
+  async loadOniguruma() {
+    const wasmBuffer = await fetch('https://unpkg.com/vpc-shiki-renderer@0.10.2/dist/onig.wasm').then(res => res.arrayBuffer())
+    await this.runCommand('setWasm', { wasm: wasmBuffer }, [wasmBuffer])
+  },
+  async getThemeByUrl(themeUrl) {
+    const { data } = await this.runCommand('loadTheme', { theme: themeUrl })
+    const theme = this._deserializeJson(data.themeBuffer)
+    return theme
+  },
+  async setHighlighter(options) {
+    await this.runCommand('setHighlighter', { ...options })
+    this.currentTheme = options.theme
+  },
+  async tokenizeCode(code, lang) {
+    const { data: tokens } = await this.runCommand('codeToThemedTokens', { code, lang })
+    return tokens
   },
 }, {
-  TIMEOUT_MS: { value: 10000, writable: true },
+  currentTheme: { value: null, writable: true },
+  timeoutMs: { value: 10000, writable: true },
   worker: { value: null, writable: true },
   callbacks: { value: {} },
 })

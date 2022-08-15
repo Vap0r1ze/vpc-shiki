@@ -1,8 +1,24 @@
+let highlighter
+
 const handlers = {
   onError(error) {
     this.evt = 'ERROR'
     this.data.type = error.constructor.name
     this.data.message = error.message
+  },
+  setWasm({ wasm }) {
+    shiki.setWasm(wasm)
+  },
+  async loadTheme({ theme }) {
+    const themeData = await shiki.loadTheme(theme)
+    const themeBuffer = this.data.themeBuffer = serializeJson(themeData)
+    this.transferables = [ themeBuffer.buffer ]
+  },
+  async setHighlighter({ theme, langs }) {
+    highlighter = await shiki.getHighlighter({ theme, langs })
+  },
+  async codeToThemedTokens({ code, lang }) {
+    this.data = await highlighter.codeToThemedTokens(code, lang)
   },
 }
 
@@ -24,6 +40,22 @@ onmessage = ({ data: { cmd, args = {}, nonce } }) => {
     else
       onError(new Error(`${error}`))
   }).then(() => {
-    postMessage(res)
+    const { transferables } = res
+    if (transferables) delete res.transferables
+    postMessage(res, transferables)
   })
+}
+
+function serializeJson(json) {
+  const str = JSON.stringify(json)
+  const uintArray = []
+  const len = str.length
+
+  let i = -1
+
+  while (++i < len) {
+    uintArray[i] = str.charCodeAt(i)
+  }
+
+  return new Uint8Array(uintArray)
 }

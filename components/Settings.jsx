@@ -78,12 +78,12 @@ module.exports = class Settings extends React.PureComponent {
       getSetting,
       updateSetting,
       loadHighlighter,
-      getHighlighter,
+      shiki,
       getLang,
       refreshCodeblocks
     } = this.props
 
-    if (!this.state.themeLoadingCauses.length && !getHighlighter()) {
+    if (!this.state.themeLoadingCauses.length && !shiki.currentTheme) {
       const highlighterCause = Date.now()
       this.addLoadingCause(highlighterCause)
       loadHighlighter().then(() => {
@@ -96,7 +96,7 @@ module.exports = class Settings extends React.PureComponent {
         ref={sh => this.previewsRef.current[i] = sh}
         lang={data.lang}
         content={data.content}
-        getHighlighter={getHighlighter}
+        shiki={shiki}
         getLang={getLang}
         isPreview={true}
         tryHLJS={getSetting('try-hljs', 'never')}
@@ -141,7 +141,7 @@ module.exports = class Settings extends React.PureComponent {
             })
           }}
           options={Object.keys(themes).map(theme => ({
-            label: themes[theme],
+            label: themes[theme].name,
             value: theme,
           }))}
           value={getSetting('theme', Object.keys(themes)[0])}

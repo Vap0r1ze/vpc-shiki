@@ -87,18 +87,15 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
   }
 
   lazilyHighlight () {
-    const { content, lang, getHighlighter } = this.props
+    const { content, lang, shiki } = this.props
     if (!lang || this.shouldUseHLJS()) return
 
     this.observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
-          try {
-            const highlighter = getHighlighter()
-            this.setState({ tokens: highlighter.codeToThemedTokens(content, lang) })
-          } catch (e) {
-            // Silently ignore
-          }
+          shiki.tokenizeCode(content, lang).then(tokens => {
+            this.setState({ tokens })
+          }).catch(() => {})
 
           this.observer.disconnect()
         }
@@ -116,7 +113,7 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
     const {
       lang,
       content,
-      getHighlighter,
+      shiki,
       getLang,
       isPreview,
       useDevIcon,
@@ -128,9 +125,8 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
     let langName = shikiLang?.name
 
     const useHLJS = this.shouldUseHLJS()
-    const highlighter = getHighlighter()
 
-    const theme = useHLJS ? null : highlighter?.getTheme()
+    const theme = useHLJS ? null : shiki.currentTheme
     const plainColor = theme?.fg || 'var(--text-normal)'
     const accentBgColor = theme?.colors?.['statusBar.background'] || (useHLJS ? '#7289da' : '#007BC8')
     const accentFgColor = theme?.colors?.['statusBar.foreground'] || '#FFF'

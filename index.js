@@ -11,6 +11,8 @@ const shiki = require('./modules/shiki')
 
 module.exports = class ShikiCodeblocks extends Plugin {
   async startPlugin () {
+    window.shiki = shiki
+    // return
     this.loadStylesheet('style.css')
 
     powercord.api.settings.registerSettings('vpc-shiki', {
@@ -22,12 +24,12 @@ module.exports = class ShikiCodeblocks extends Plugin {
         toggleSetting,
         shiki,
         loadHighlighter: this.loadHighlighter.bind(this),
-        getHighlighter: this.getHighlighter.bind(this),
         getLang: this.getLang,
         refreshCodeblocks: () => this.forceUpdate()
       })
     })
 
+    await shiki.init()
     await this.loadHighlighter()
     this.patchCodeblocks()
   }
@@ -40,20 +42,17 @@ module.exports = class ShikiCodeblocks extends Plugin {
 
   async loadHighlighter (theme) {
     if (!theme) theme = this.settings.get('theme', Object.keys(themes)[0])
-    const customThemeHref = this.settings.get('custom-theme')
-    if (customThemeHref) {
+    if (typeof theme === 'string') theme = (themes[theme] ?? Object.values(themes)[0]).data
+    const customThemeUrl = this.settings.get('custom-theme')
+    if (customThemeUrl) {
       try {
-        const customTheme = await shiki.loadTheme(customThemeHref)
-        return this.highlighter = await shiki.getHighlighter({
-          theme: customTheme,
-          langs: languages
-        })
+        theme = await shiki.getThemeByUrl(customThemeUrl)
       } catch (error) {
         console.error(error)
       }
     }
 
-    return this.highlighter = await shiki.getHighlighter({
+    return await shiki.setHighlighter({
       theme,
       langs: languages
     })
@@ -79,7 +78,7 @@ module.exports = class ShikiCodeblocks extends Plugin {
       return React.createElement(ShikiHighlighter, {
         lang,
         content,
-        getHighlighter: this.getHighlighter.bind(this),
+        shiki,
         getLang: this.getLang,
         tryHLJS: this.settings.get('try-hljs', 'never'),
         useDevIcon: this.settings.get('use-devicon', 'false'),
@@ -88,9 +87,6 @@ module.exports = class ShikiCodeblocks extends Plugin {
     }
   }
 
-  getHighlighter () {
-    return this.highlighter
-  }
   getLang (id) {
     return languages.find(lang => [...(lang.aliases || []), lang.id].includes(id))
   }
