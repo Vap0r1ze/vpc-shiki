@@ -1,5 +1,5 @@
 const { React } = require('powercord/webpack')
-const { SelectInput, TextInput, SwitchItem, RadioGroup, SliderInput } = require('powercord/components/settings')
+const { SelectInput, TextInput, RadioGroup, SliderInput } = require('powercord/components/settings')
 const { Spinner } = require('powercord/components')
 const { sleep } = require('powercord/util')
 const ShikiHighlighter = require('./ShikiHighlighter')
@@ -77,16 +77,15 @@ module.exports = class Settings extends React.PureComponent {
     const {
       getSetting,
       updateSetting,
-      loadHighlighter,
-      getHighlighter,
-      getLang,
+      setTheme,
+      shiki,
       refreshCodeblocks
     } = this.props
 
-    if (!this.state.themeLoadingCauses.length && !getHighlighter()) {
+    if (!this.state.themeLoadingCauses.length && !shiki.currentTheme) {
       const highlighterCause = Date.now()
       this.addLoadingCause(highlighterCause)
-      loadHighlighter().then(() => {
+      setTheme().then(() => {
         this.removeLoadingCause(highlighterCause)
       })
     }
@@ -96,8 +95,7 @@ module.exports = class Settings extends React.PureComponent {
         ref={sh => this.previewsRef.current[i] = sh}
         lang={data.lang}
         content={data.content}
-        getHighlighter={getHighlighter}
-        getLang={getLang}
+        shiki={shiki}
         isPreview={true}
         tryHLJS={getSetting('try-hljs', 'never')}
         useDevIcon={getSetting('use-devicon', 'false')}
@@ -135,13 +133,13 @@ module.exports = class Settings extends React.PureComponent {
             updateSetting('theme', value)
             const themeCause = Date.now()
             this.addLoadingCause(themeCause)
-            this.padPromise(loadHighlighter()).then(() => {
+            this.padPromise(setTheme()).then(() => {
               this.removeLoadingCause(themeCause)
               refreshCodeblocks()
             })
           }}
           options={Object.keys(themes).map(theme => ({
-            label: themes[theme],
+            label: themes[theme].name,
             value: theme,
           }))}
           value={getSetting('theme', Object.keys(themes)[0])}
@@ -159,7 +157,7 @@ module.exports = class Settings extends React.PureComponent {
               updateSetting('custom-theme', value)
               const themeCause = Date.now()
               this.addLoadingCause(themeCause)
-              this.padPromise(loadHighlighter()).then(() => {
+              this.padPromise(setTheme()).then(() => {
                 this.removeLoadingCause(themeCause)
                 refreshCodeblocks()
                 this.previewsRef.current.forEach(sh => sh.lazilyHighlight())

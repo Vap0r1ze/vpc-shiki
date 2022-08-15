@@ -5,8 +5,6 @@ const { getReactInstance } = require('powercord/util')
 
 const Settings = require('./components/Settings.jsx')
 const ShikiHighlighter = require('./components/ShikiHighlighter.jsx')
-const languages = require('./languages')
-const themes = require('./themes')
 const shiki = require('./modules/shiki')
 
 module.exports = class ShikiCodeblocks extends Plugin {
@@ -21,14 +19,13 @@ module.exports = class ShikiCodeblocks extends Plugin {
         updateSetting,
         toggleSetting,
         shiki,
-        loadHighlighter: this.loadHighlighter.bind(this),
-        getHighlighter: this.getHighlighter.bind(this),
-        getLang: this.getLang,
+        setTheme: this.setTheme.bind(this),
         refreshCodeblocks: () => this.forceUpdate()
       })
     })
 
-    await this.loadHighlighter()
+    await shiki.init()
+    await this.setTheme()
     this.patchCodeblocks()
   }
 
@@ -38,25 +35,19 @@ module.exports = class ShikiCodeblocks extends Plugin {
     this.forceUpdate()
   }
 
-  async loadHighlighter (theme) {
-    if (!theme) theme = this.settings.get('theme', Object.keys(themes)[0])
-    const customThemeHref = this.settings.get('custom-theme')
-    if (customThemeHref) {
+  async setTheme (themeId) {
+    if (!themeId) themeId = this.settings.get('theme', Object.keys(shiki.themes)[0])
+    const customThemeUrl = this.settings.get('custom-theme')
+    if (customThemeUrl) {
       try {
-        const customTheme = await shiki.loadTheme(customThemeHref)
-        return this.highlighter = await shiki.getHighlighter({
-          theme: customTheme,
-          langs: languages
-        })
+        await shiki.loadTheme(customThemeUrl)
+        themeId = customThemeUrl
       } catch (error) {
         console.error(error)
       }
     }
 
-    return this.highlighter = await shiki.getHighlighter({
-      theme,
-      langs: languages
-    })
+    return await shiki.setTheme(themeId)
   }
 
   async patchCodeblocks () {
@@ -79,8 +70,7 @@ module.exports = class ShikiCodeblocks extends Plugin {
       return React.createElement(ShikiHighlighter, {
         lang,
         content,
-        getHighlighter: this.getHighlighter.bind(this),
-        getLang: this.getLang,
+        shiki,
         tryHLJS: this.settings.get('try-hljs', 'never'),
         useDevIcon: this.settings.get('use-devicon', 'false'),
         bgOpacity:  this.settings.get('bg-opacity', 100),
@@ -88,12 +78,6 @@ module.exports = class ShikiCodeblocks extends Plugin {
     }
   }
 
-  getHighlighter () {
-    return this.highlighter
-  }
-  getLang (id) {
-    return languages.find(lang => [...(lang.aliases || []), lang.id].includes(id))
-  }
   forceUpdate () {
     document.querySelectorAll('[id^="chat-messages-"]').forEach(e => getReactInstance(e)?.memoizedProps?.onMouseMove?.())
   }

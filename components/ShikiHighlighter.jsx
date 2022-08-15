@@ -1,4 +1,3 @@
-const color2Rgba = require('../modules/color2Rgba.min.js')
 const { React, hljs, i18n: { Messages } } = require('powercord/webpack')
 const { clipboard } = require('electron')
 const fs = require('fs')
@@ -10,6 +9,12 @@ const getTempFilePath = fileName => path.join(tempFileDir, fileName)
 const getVscodeUrl = filePath => {
   if (os.platform() === 'win32') return 'vscode://file/' + filePath
   return new URL(filePath, 'vscode://file/').href
+}
+const hex2Rgb = hex => {
+  hex = hex.slice(1)
+  if (hex.length < 6) hex = hex.split('').map(c => c + c).join('')
+  if (hex.length === 6) hex += 'ff'
+  return hex.split(/(..)/).filter(Boolean).map(c => parseInt(c, 16))
 }
 
 module.exports = class ShikiHighlighter extends React.PureComponent {
@@ -87,18 +92,15 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
   }
 
   lazilyHighlight () {
-    const { content, lang, getHighlighter } = this.props
+    const { content, lang, shiki } = this.props
     if (!lang || this.shouldUseHLJS()) return
 
     this.observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
-          try {
-            const highlighter = getHighlighter()
-            this.setState({ tokens: highlighter.codeToThemedTokens(content, lang) })
-          } catch (e) {
-            // Silently ignore
-          }
+          shiki.tokenizeCode(content, lang).then(tokens => {
+            this.setState({ tokens })
+          }).catch(() => {})
 
           this.observer.disconnect()
         }
@@ -116,21 +118,19 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
     const {
       lang,
       content,
-      getHighlighter,
-      getLang,
+      shiki,
       isPreview,
       useDevIcon,
       bgOpacity,
     } = this.props
 
     const hljsLang = hljs?.getLanguage?.(lang)
-    const shikiLang = getLang(lang)
+    const shikiLang = shiki.resolveLang(lang)
     let langName = shikiLang?.name
 
     const useHLJS = this.shouldUseHLJS()
-    const highlighter = getHighlighter()
 
-    const theme = useHLJS ? null : highlighter?.getTheme()
+    const theme = useHLJS ? null : shiki.currentTheme
     const plainColor = theme?.fg || 'var(--text-normal)'
     const accentBgColor = theme?.colors?.['statusBar.background'] || (useHLJS ? '#7289da' : '#007BC8')
     const accentFgColor = theme?.colors?.['statusBar.foreground'] || '#FFF'
@@ -185,7 +185,7 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
       <pre ref={this.ref} className={preClassName} style={{
         backgroundColor: useHLJS
           ? backgroundColor
-          : `rgba(${color2Rgba(backgroundColor).slice(0, 3).concat(bgOpacity / 100).join(', ')})`,
+          : `rgba(${hex2Rgb(backgroundColor).concat(bgOpacity / 100).join(', ')})`,
         color: plainColor,
       }}>
         <code>
@@ -217,10 +217,10 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
   }
 
   shouldUseHLJS () {
-    const { lang, getLang, tryHLJS } = this.props
+    const { lang, shiki, tryHLJS } = this.props
 
     const hljsLang = hljs?.getLanguage?.(lang)
-    const shikiLang = getLang(lang)
+    const shikiLang = shiki.resolveLang(lang)
     const langName = shikiLang?.name
 
     switch (tryHLJS) {
