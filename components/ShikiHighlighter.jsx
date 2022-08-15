@@ -1,4 +1,3 @@
-const color2Rgba = require('../modules/color2Rgba.min.js')
 const { React, hljs, i18n: { Messages } } = require('powercord/webpack')
 const { clipboard } = require('electron')
 const fs = require('fs')
@@ -10,6 +9,12 @@ const getTempFilePath = fileName => path.join(tempFileDir, fileName)
 const getVscodeUrl = filePath => {
   if (os.platform() === 'win32') return 'vscode://file/' + filePath
   return new URL(filePath, 'vscode://file/').href
+}
+const hex2Rgb = hex => {
+  hex = hex.slice(1)
+  if (hex.length < 6) hex = hex.split('').map(c => c + c).join('')
+  if (hex.length === 6) hex += 'ff'
+  return hex.split(/(..)/).filter(Boolean).map(c => parseInt(c, 16))
 }
 
 module.exports = class ShikiHighlighter extends React.PureComponent {
@@ -180,7 +185,7 @@ module.exports = class ShikiHighlighter extends React.PureComponent {
       <pre ref={this.ref} className={preClassName} style={{
         backgroundColor: useHLJS
           ? backgroundColor
-          : `rgba(${color2Rgba(backgroundColor).slice(0, 3).concat(bgOpacity / 100).join(', ')})`,
+          : `rgba(${hex2Rgb(backgroundColor).concat(bgOpacity / 100).join(', ')})`,
         color: plainColor,
       }}>
         <code>
