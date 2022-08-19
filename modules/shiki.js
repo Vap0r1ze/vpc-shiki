@@ -91,7 +91,7 @@ module.exports = Object.create({
       await themes.loadData(themeId)
       theme = themes[themeId].data
     }
-
+    
     await this.runCommand('loadTheme', { theme })
 
     this.loadedThemes[themeId] = true

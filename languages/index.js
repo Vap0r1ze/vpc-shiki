@@ -1,4 +1,4 @@
-const fs = require('fs/promises')
+const fs = require('fs').promises
 const { resolve } = require('path')
 
 module.exports = [
@@ -401,6 +401,12 @@ module.exports = [
     id: 'lua',
     scopeName: 'source.lua',
     grammarFile: 'lua.tmLanguage.json'
+  },
+  {
+    name: 'Luau',
+    id: 'luau',
+    scopeName: 'source.luau',
+    grammarFile: 'luau.tmLanguage.json'
   },
   {
     name: 'Makefile',
