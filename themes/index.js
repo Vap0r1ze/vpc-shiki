@@ -1,4 +1,4 @@
-const fs = require('fs/promises')
+const fs = require('fs').promises
 const { resolve } = require('path')
 
 module.exports = {
