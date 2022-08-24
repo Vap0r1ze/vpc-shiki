@@ -24,9 +24,10 @@ module.exports = class ShikiCodeblocks extends Plugin {
       })
     })
 
-    await shiki.init()
-    await this.setTheme()
     this.patchCodeblocks()
+    this.shiki = shiki
+
+    shiki.init().then(() => this.setTheme())
   }
 
   pluginWillUnload () {
